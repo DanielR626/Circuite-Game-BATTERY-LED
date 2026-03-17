@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>⚡ Reto 1 - Nivel 1 | ElectroCity - La Primera Luz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+--bg:#1a0f2e;
+--bg-gradient:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);
+--green:#39ff14;--cyan:#00ffff;--pink:#ff1493;
+--yellow:#ffd700;--red:#ff4757;--blue:#4facfe;--orange:#ff9800;
+--purple:#9b59b6;--electric:#00ff88;
+--panel-bg:rgba(255,255,255,0.95);
+--text-dark:#333;
+}
+body{
+font-family:'Poppins',sans-serif;
+background:var(--bg-gradient);
+min-height:100vh;padding:12px;color:#fff;overflow-x:hidden;
+position:relative;
+}
+/* ══ FONDO CON PARTÍCULAS ══ */
+body::before{
+content:'';position:fixed;inset:0;
+background-image:
+repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 1px,transparent 1px,transparent 60px),
+repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 1px,transparent 1px,transparent 60px);
+pointer-events:none;z-index:0;
+}
+.particles-container{
+position:fixed;inset:0;pointer-events:none;z-index:1;
+overflow:hidden;
+}
+.particle{
+position:absolute;width:6px;height:6px;
+background:rgba(255,215,0,.7);
+border-radius:50%;
+box-shadow:0 0 15px rgba(255,215,0,.5);
+animation:float 18s infinite;
+opacity:.5;
+}
+.particle:nth-child(1){left:10%;animation-delay:0s;animation-duration:16s;}
+.particle:nth-child(2){left:20%;animation-delay:3s;animation-duration:18s;}
+.particle:nth-child(3){left:30%;animation-delay:6s;animation-duration:20s;}
+.particle:nth-child(4){left:40%;animation-delay:2s;animation-duration:17s;}
+.particle:nth-child(5){left:50%;animation-delay:5s;animation-duration:19s;}
+.particle:nth-child(6){left:60%;animation-delay:8s;animation-duration:21s;}
+.particle:nth-child(7){left:70%;animation-delay:4s;animation-duration:18s;}
+.particle:nth-child(8){left:80%;animation-delay:7s;animation-duration:20s;}
+.particle:nth-child(9){left:90%;animation-delay:1s;animation-duration:17s;}
+.particle:nth-child(10){left:15%;animation-delay:9s;animation-duration:19s;}
+@keyframes float{
+0%{transform:translateY(100vh) scale(0);opacity:0;}
+15%{opacity:.5;}
+85%{opacity:.5;}
+100%{transform:translateY(-100vh) scale(1);opacity:0;}
+}
+.wrap{max-width:1200px;margin:0 auto;position:relative;z-index:10;}
+/* ══ HEADER ESTILO ELECTROCITY ══ */
+.hdr{
+background:linear-gradient(135deg,rgba(102,126,234,.35),rgba(118,75,162,.4),rgba(240,147,251,.3));
+border:3px solid rgba(255,215,0,.5);border-radius:24px;
+padding:26px 20px;text-align:center;margin-bottom:16px;
+box-shadow:0 0 50px rgba(255,215,0,.25),0 8px 32px rgba(0,0,0,.5);
+position:relative;overflow:hidden;
+}
+.hdr::before{
+content:'';position:absolute;top:0;left:-100%;
+width:100%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+animation:shimmer 4s infinite;
+}
+@keyframes shimmer{
+0%{left:-100%;}
+100%{left:100%;}
+}
+.hdr-badge{
+display:inline-block;
+background:linear-gradient(135deg,#f093fb,#667eea);
+padding:8px 24px;border-radius:20px;
+font-size:.8em;font-weight:900;
+margin-bottom:14px;letter-spacing:2px;
+box-shadow:0 0 20px rgba(240,147,251,.5);
+animation:pulse 2.5s infinite;
+}
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.05);}
+}
+.hdr-title{
+font-size:clamp(1.4em,5vw,2.8em);font-weight:900;letter-spacing:3px;
+background:linear-gradient(90deg,#ffd700,#ff6b9d,#4facfe,#ffd700);
+background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+animation:hdrFlow 5s linear infinite;margin-bottom:10px;
+text-shadow:0 0 30px rgba(255,215,0,.4);
+}
+@keyframes hdrFlow{0%{background-position:0%}100%{background-position:300%}}
+.hdr-sub{font-size:clamp(.9em,2.5vw,1.2em);opacity:.95;font-weight:700;margin-bottom:8px;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5);}
+.hdr-desc{font-size:clamp(.75em,1.8vw,.95em);opacity:.9;max-width:800px;margin:0 auto;line-height:1.7;}
+.progress-container{
+background:rgba(0,0,0,.35);border-radius:16px;padding:4px;margin-top:18px;
+border:2px solid rgba(255,255,255,.35);
+}
+.progress-bar{height:12px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.2);}
+.progress-fill{height:100%;width:0%;border-radius:10px;background:linear-gradient(90deg,#f093fb,#ffd700,#4facfe);transition:width .5s ease;box-shadow:0 0 15px rgba(240,147,251,.5);}
+/* ══ INFO CARD ══ */
+.info-card{
+background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.1));
+border:2px solid rgba(255,255,255,.4);border-radius:20px;
+padding:20px;margin-bottom:16px;
+box-shadow:0 0 30px rgba(255,255,255,.15);
+position:relative;overflow:hidden;
+}
+.info-card::before{
+content:'💡';position:absolute;top:10px;right:15px;
+font-size:2em;opacity:.2;animation:rotate 12s linear infinite;
+}
+@keyframes rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.info-title{
+font-size:clamp(1em,2.5vw,1.3em);font-weight:900;
+color:#fff;margin-bottom:12px;
+display:flex;align-items:center;gap:10px;
+}
+.info-text{font-size:clamp(.8em,1.6vw,.95em);line-height:1.8;opacity:.95;}
+.info-highlight{
+display:inline-block;
+background:rgba(255,215,0,.2);
+padding:3px 12px;border-radius:8px;
+font-weight:900;color:#ffd700;
+border:1px solid rgba(255,215,0,.4);
+}
+/* ══ GUÍA ══ */
+.guide{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);border-radius:18px;padding:20px 16px;margin-bottom:16px;}
+.section-title{
+font-size:clamp(1em,2.6vw,1.4em);font-weight:900;color:#fff;
+text-shadow:0 0 15px rgba(255,255,255,.35);text-align:center;margin-bottom:18px;
+padding-bottom:12px;border-bottom:2px solid rgba(255,255,255,.3);
+}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;}
+.comp-card{
+background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.25);
+border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;
+transition:all .3s;position:relative;overflow:hidden;
+}
+.comp-card::before{
+content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+background:linear-gradient(135deg,transparent,rgba(255,255,255,.12));
+opacity:0;transition:opacity .3s;
+}
+.comp-card:hover{transform:translateY(-7px);border-color:#ffd700;box-shadow:0 0 30px rgba(255,215,0,.4);}
+.comp-card:hover::before{opacity:1;}
+.comp-card:active{transform:scale(.97);}
+.comp-icon{font-size:clamp(2.2em,5vw,3.2em);display:block;margin-bottom:10px;filter:drop-shadow(0 0 10px currentColor);}
+.comp-name{font-weight:900;font-size:clamp(.9em,2vw,1.15em);margin-bottom:6px;}
+.comp-desc{font-size:clamp(.72em,1.4vw,.88em);opacity:.85;line-height:1.5;}
+.comp-tag{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:900;border:2px solid;}
+/* ══ SCORES ══ */
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.sc{
+background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(240,147,251,.12));
+border:2px solid rgba(139,92,246,.45);border-radius:16px;
+padding:16px 10px;text-align:center;
+box-shadow:0 0 18px rgba(255,215,0,.18);
+transition:transform .3s;
+}
+.sc:hover{transform:translateY(-4px);}
+.sc-label{font-size:clamp(.68em,1.4vw,.85em);opacity:.9;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.2px;}
+.sc-val{font-size:clamp(1.2em,2.6vw,2em);font-weight:900;color:#ffd700;text-shadow:0 0 15px rgba(255,215,0,.6);}
+/* ══ MAIN GRID ══ */
+.main-grid{display:grid;gap:16px;margin-bottom:16px;}
+@media(min-width:900px){.main-grid{grid-template-columns:340px 1fr;}}
+/* ══ PANEL ══ */
+.panel{background:var(--panel-bg);border:2px solid rgba(255,255,255,.3);border-radius:20px;padding:20px 16px;color:var(--text-dark);}
+/* ══ MISIONES ══ */
+.mission{
+display:flex;align-items:center;gap:14px;
+background:linear-gradient(135deg,#a8edea,#fed6e3);border:2px solid #fff;
+border-radius:14px;padding:16px 14px;margin:12px 0;
+transition:all .35s;position:relative;overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+.mission::before{
+content:'';position:absolute;left:0;top:0;bottom:0;width:5px;
+background:linear-gradient(180deg,#f093fb,#667eea);
+opacity:0;transition:opacity .3s;
+}
+.mission:hover::before{opacity:1;}
+.mission.done{background:linear-gradient(135deg,#84fab0,#8fd3f4);border-color:rgba(57,255,20,.6);}
+.mission.done .mission-num{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 0 18px #10b981;}
+.mission-num{
+min-width:38px;height:38px;border-radius:50%;
+background:linear-gradient(135deg,#667eea,#f093fb);
+display:flex;align-items:center;justify-content:center;
+font-weight:900;font-size:.95em;flex-shrink:0;color:#fff;
+border:2px solid rgba(255,255,255,.5);
+box-shadow:0 0 15px rgba(102,126,234,.4);
+transition:all .3s;
+}
+.mission-txt{font-size:clamp(.78em,1.5vw,.95em);font-weight:700;line-height:1.6;color:#333;}
+.mission-txt strong{color:#764ba2;}
+.instrbox{
+background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,215,0,.1));
+border:2px solid rgba(255,152,0,.45);
+border-radius:16px;padding:16px;margin:16px 0;
+font-size:clamp(.78em,1.5vw,.92em);line-height:1.9;font-weight:700;color:#333;
+box-shadow:0 0 25px rgba(255,152,0,.15);
+}
+.btn{
+width:100%;padding:16px;border:none;border-radius:50px;
+font-weight:900;font-size:clamp(.88em,1.8vw,1.05em);
+text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;
+margin:8px 0;transition:all .25s;touch-action:manipulation;
+position:relative;overflow:hidden;
+}
+.btn::before{
+content:'';position:absolute;top:50%;left:50%;
+width:0;height:0;border-radius:50%;
+background:rgba(255,255,255,.3);
+transform:translate(-50%,-50%);transition:width .6s,height .6s;
+}
+.btn:active::before{width:300px;height:300px;}
+.btn:hover{transform:translateY(-4px);}
+.btn:active{transform:scale(.98);}
+.btn-ok{
+background:linear-gradient(135deg,#10b981,#059669);
+color:#fff;box-shadow:0 0 25px rgba(16,185,129,.4);
+}
+.btn-ok:hover{box-shadow:0 0 35px rgba(16,185,129,.6);}
+.btn-rst{
+background:linear-gradient(135deg,#ffecd2,#fcb69f);color:#333;
+border:2px solid rgba(255,152,0,.3);
+}
+.btn-rst:hover{border-color:#ef4444;box-shadow:0 0 25px rgba(239,68,68,.3);}
+/* ══ PROTOBOARD ══ */
+.board-wrap{overflow:auto;border-radius:18px;-webkit-overflow-scrolling:touch;}
+#board{
+position:relative;width:100%;min-height:480px;
+border-radius:18px;overflow:visible;
+background:linear-gradient(160deg,#2d3561,#1e293b,#2d3561);
+border:3px solid rgba(255,255,255,.4);
+box-shadow:0 0 40px rgba(102,126,234,.25),inset 0 0 70px rgba(0,0,0,.4);
+}
+#board::before{
+content:'';position:absolute;inset:0;
+background-image:
+repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 32px),
+repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 32px);
+pointer-events:none;border-radius:18px;
+}
+.board-hud{
+position:absolute;top:14px;left:50%;transform:translateX(-50%);
+background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);
+border-radius:30px;padding:8px 20px;
+display:flex;align-items:center;gap:12px;z-index:20;
+box-shadow:0 0 25px rgba(255,255,255,.25);
+}
+.hud-dot{width:9px;height:9px;border-radius:50%;background:#10b981;box-shadow:0 0 12px #10b981;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.25);}}
+.hud-txt{font-size:.65em;font-weight:900;color:#10b981;text-shadow:0 0 10px #10b981;white-space:nowrap;letter-spacing:1.8px;}
+#wire-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible;}
+/* ══ COMPONENTES ══ */
+.comp{position:absolute;z-index:10;cursor:grab;touch-action:none;user-select:none;}
+.comp:active{cursor:grabbing;}
+.comp.dragging{opacity:.9;z-index:100;filter:brightness(1.2);}
+.comp-base{
+background:linear-gradient(135deg,rgba(45,53,97,.95),rgba(30,41,59,.95));
+border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:10px;
+box-shadow:0 8px 22px rgba(0,0,0,.5),0 0 18px rgba(102,126,234,.2);
+transition:box-shadow .3s;
+}
+.comp:hover .comp-base{box-shadow:0 10px 28px rgba(0,0,0,.6),0 0 28px rgba(102,126,234,.35);}
+/* Batería */
+.battery{width:88px;text-align:center;}
+.batt-body{
+width:72px;height:118px;
+background:linear-gradient(180deg,#10b981,#059669,#047857);
+border:3px solid rgba(16,185,129,.6);border-radius:12px;
+position:relative;margin:0 auto;
+box-shadow:0 0 22px rgba(16,185,129,.4);
+}
+.batt-body::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:22px;height:12px;background:#64748b;border-radius:4px 4px 0 0;}
+.batt-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;font-size:1.05em;text-shadow:0 0 12px #fff;}
+.batt-sign{position:absolute;font-size:.8em;font-weight:900;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;}
+.batt-plus{top:8px;right:5px;color:#ef4444;border-color:#ef4444;box-shadow:0 0 10px #ef4444;}
+.batt-minus{bottom:8px;right:5px;color:#e2e8f0;border-color:#e2e8f0;}
+/* Resistencia */
+.resistor{width:138px;text-align:center;}
+.res-body{
+width:118px;height:42px;
+background:linear-gradient(90deg,#d4a574 0%,#f5deb3 12%,#d4a574 22%,#5c3a1e 28%,#d4a574 33%,#facc15 38%,#d4a574 43%,#f97316 50%,#d4a574 57%,#f5deb3 62%,#d4a574 67%,#5c3a1e 72%,#d4a574 78%,#f5deb3 88%,#d4a574 100%);
+border-radius:10px;border:2px solid rgba(212,165,116,.6);
+position:relative;margin:0 auto;box-shadow:0 0 15px rgba(249,115,22,.3);
+}
+.res-lbl{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:.62em;font-weight:900;color:#f97316;white-space:nowrap;text-shadow:0 0 10px #f97316;}
+.res-wire{position:absolute;top:50%;transform:translateY(-50%);height:4px;background:#94a3b8;border-radius:2px;}
+.res-wl{left:-20px;width:20px;}.res-wr{right:-20px;width:20px;}
+/* LED */
+.led{width:88px;text-align:center;}
+.led-body{
+width:70px;height:70px;
+background:radial-gradient(circle at 35% 35%,#fecaca 0%,#fca5a5 20%,#f87171 40%,#ef4444 60%,#dc2626 80%,#991b1b 100%);
+border-radius:50% 50% 46% 46%;position:relative;margin:0 auto;
+border:3px solid rgba(248,113,113,.5);
+box-shadow:0 0 22px rgba(239,68,68,.3),0 8px 18px rgba(0,0,0,.45);transition:all .4s;
+}
+.led-body::before{content:'';position:absolute;top:12px;left:12px;width:28px;height:28px;background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(255,255,255,.2) 70%,transparent 100%);border-radius:50%;}
+.led.active .led-body{
+background:radial-gradient(circle at 35% 35%,#fca5a5,#f87171 20%,#ef4444 60%,#dc2626 80%,#991b1b 100%);
+box-shadow:0 0 40px #ef4444,0 0 80px rgba(239,68,68,.7),0 0 120px rgba(239,68,68,.4);
+animation:ledg .7s ease-in-out infinite;
+}
+@keyframes ledg{0%,100%{filter:brightness(1.4);transform:scale(1);}50%{filter:brightness(2.3);transform:scale(1.06);}}
+.led-sign{position:absolute;font-size:.8em;font-weight:900;background:rgba(255,255,255,.9);width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;z-index:5;color:#1e293b;}
+.led-sp{top:-6px;left:14px;color:#ef4444;border-color:#ef4444;}
+.led-sn{bottom:-6px;right:14px;color:#64748b;border-color:#64748b;}
+/* ══ PUNTOS CONEXIÓN ══ */
+.cp{
+position:absolute;
+width:clamp(32px,6vw,40px);height:clamp(32px,6vw,40px);
+background:radial-gradient(circle,rgba(255,215,0,.95),rgba(245,158,11,.7));
+border:3px solid rgba(255,255,255,.85);border-radius:50%;
+cursor:pointer;z-index:15;
+box-shadow:0 0 15px rgba(255,215,0,.5),0 0 30px rgba(255,215,0,.25);
+touch-action:manipulation;transition:all .25s;
+}
+.cp::before{content:'';position:absolute;inset:6px;background:radial-gradient(circle,rgba(255,255,240,.9),rgba(255,215,0,.5));border-radius:50%;}
+.cp:hover{transform:scale(1.55);box-shadow:0 0 32px rgba(255,215,0,.9),0 0 60px rgba(255,215,0,.5);}
+.cp.connected{
+background:radial-gradient(circle,#10b981,#059669);
+border-color:#10b981;
+animation:cpc 1.6s ease-in-out infinite;
+box-shadow:0 0 22px rgba(16,185,129,.8),0 0 40px rgba(16,185,129,.45);
+}
+@keyframes cpc{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+.cp.selected{background:radial-gradient(circle,#06b6d4,#0891b2);border-color:#06b6d4;animation:cps .7s ease-in-out infinite;box-shadow:0 0 28px #06b6d4,0 0 55px rgba(6,182,212,.35);}
+@keyframes cps{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+.cp[data-tip]::after{
+content:attr(data-tip);position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+background:rgba(30,41,59,.95);color:#ffd700;
+padding:7px 14px;border-radius:10px;font-size:12px;white-space:nowrap;
+opacity:0;pointer-events:none;transition:opacity .25s;
+border:2px solid rgba(255,215,0,.45);font-weight:800;box-shadow:0 0 18px rgba(255,215,0,.3);
+}
+.cp:hover::after{opacity:1;}
+/* Posiciones desktop */
+.battery{left:120px;top:50%;transform:translateY(-50%);}
+.resistor{left:320px;top:50%;transform:translateY(-50%);}
+.led{left:520px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){
+.battery{left:5%;top:16%;transform:none;}
+.resistor{left:48%;top:16%;transform:none;}
+.led{left:50%;top:58%;transform:translateX(-50%);}
+#board{min-height:550px;}
+}
+@media(max-width:420px){
+.battery{left:50%;top:9%;transform:translateX(-50%);}
+.resistor{left:50%;top:34%;transform:translateX(-50%);}
+.led{left:50%;top:63%;transform:translateX(-50%);}
+#board{min-height:650px;}
+}
+/* ══ ENERGÍA ANIMADA ══ */
+.energy-particle{
+position:absolute;width:11px;height:11px;border-radius:50%;
+pointer-events:none;z-index:30;
+box-shadow:0 0 14px currentColor,0 0 28px currentColor,0 0 42px currentColor;
+animation:none;
+}
+@keyframes flashPt{
+0%{transform:scale(1);}30%{transform:scale(2.6);}60%{transform:scale(1.6);}100%{transform:scale(1);}
+}
+.cp.flash{animation:flashPt .55s ease-out forwards;}
+/* ══ TOAST ══ */
+.toast{
+position:fixed;top:95px;right:22px;
+padding:18px 28px;border-radius:18px;
+font-weight:900;font-size:clamp(.82em,2vw,1.02em);
+z-index:9000;transform:translateX(145%);
+transition:transform .45s cubic-bezier(.175,.885,.32,1.275);
+max-width:min(90vw,420px);border:2px solid rgba(255,255,255,.3);
+box-shadow:0 10px 35px rgba(0,0,0,.5);
+}
+.toast.show{transform:translateX(0);}
+.toast.success{background:rgba(16,185,129,.25);color:#10b981;border-color:rgba(16,185,129,.55);}
+.toast.error{background:rgba(239,68,68,.25);color:#f87171;border-color:rgba(239,68,68,.55);}
+.toast.info{background:rgba(6,182,212,.2);color:#06b6d4;border-color:rgba(6,182,212,.45);}
+.toast.warning{background:rgba(249,115,22,.22);color:#f97316;border-color:rgba(249,115,22,.5);}
+@media(max-width:600px){.toast{top:75px;right:14px;left:14px;max-width:none;}}
+/* ══ CELEBRACIÓN ══ */
+.overlay{
+position:fixed;inset:0;background:rgba(0,0,0,.92);
+z-index:9999;display:none;align-items:center;justify-content:center;
+padding:22px;backdrop-filter:blur(6px);
+}
+.overlay.active{display:flex;animation:fadeIn .45s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.celeb{
+background:linear-gradient(135deg,rgba(102,126,234,.3),rgba(240,147,251,.28));
+border:3px solid rgba(168,85,247,.55);
+padding:clamp(30px,6vw,55px) clamp(24px,5vw,48px);
+border-radius:28px;text-align:center;width:100%;max-width:580px;
+box-shadow:0 0 70px rgba(102,126,234,.45),0 0 110px rgba(240,147,251,.25);
+animation:popIn .55s cubic-bezier(.175,.885,.32,1.275);position:relative;
+}
+@keyframes popIn{from{transform:scale(.2);opacity:0;}60%{transform:scale(1.09);}to{transform:scale(1);opacity:1;}}
+.celeb-x{
+position:absolute;top:14px;right:14px;
+background:rgba(255,255,255,.18);color:#fff;
+border:2px solid rgba(255,255,255,.35);
+width:42px;height:42px;border-radius:50%;
+font-size:1.25em;cursor:pointer;font-weight:900;
+display:flex;align-items:center;justify-content:center;transition:all .25s;
+}
+.celeb-x:hover{background:rgba(239,68,68,.45);transform:rotate(90deg);box-shadow:0 0 22px rgba(239,68,68,.55);}
+.celeb-emoji{font-size:clamp(3.2em,8vw,5.5em);display:block;margin-bottom:14px;animation:bounce .85s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+.celeb-title{
+font-size:clamp(1.35em,4vw,2.5em);font-weight:900;
+background:linear-gradient(90deg,#f093fb,#ffd700,#10b981);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+margin:14px 0;line-height:1.35;
+}
+.celeb-txt{font-size:clamp(.88em,1.8vw,1.08em);opacity:.96;line-height:1.85;font-weight:700;margin-bottom:20px;}
+.confetti{position:fixed;width:13px;height:13px;animation:fall 4.8s linear forwards;border-radius:4px;z-index:10000;pointer-events:none;}
+@keyframes fall{0%{transform:translateY(-10vh) rotate(0) scale(1);opacity:1;}100%{transform:translateY(110vh) rotate(720deg) scale(.55);opacity:0;}}
+/* ══ MODAL ══ */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:10000;display:none;align-items:flex-start;justify-content:center;padding:22px;overflow-y:auto;backdrop-filter:blur(9px);}
+.modal.active{display:flex;animation:fadeIn .4s;}
+.modal-box{
+background:linear-gradient(145deg,#2d3561,#1e293b);
+border:3px solid rgba(102,126,234,.5);border-radius:26px;
+padding:clamp(22px,4vw,42px);max-width:min(95vw,800px);
+width:100%;box-shadow:0 0 55px rgba(102,126,234,.3);
+animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);
+position:relative;margin:auto;
+}
+.modal-close{
+position:absolute;top:14px;right:14px;
+background:rgba(239,68,68,.25);color:#f87171;
+border:2px solid rgba(239,68,68,.5);
+width:42px;height:42px;border-radius:50%;
+font-size:1.35em;cursor:pointer;font-weight:900;
+display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:100;
+}
+.modal-close:hover{transform:rotate(180deg);background:rgba(239,68,68,.45);box-shadow:0 0 22px rgba(239,68,68,.55);}
+.modal-title{font-size:clamp(1.15em,2.6vw,1.85em);font-weight:900;color:#4facfe;text-shadow:0 0 18px #4facfe;text-align:center;margin-bottom:17px;padding-bottom:14px;border-bottom:2px solid rgba(102,126,234,.35);padding-right:48px;}
+.modal-sym{font-size:clamp(2.3em,5vw,4.5em);text-align:center;display:block;margin:12px 0;}
+.msec{margin:14px 0;padding:16px;background:rgba(255,255,255,.06);border-radius:13px;border-left:5px solid #4facfe;}
+.msec h3{color:#06b6d4;font-weight:900;margin-bottom:11px;font-size:clamp(.95em,1.8vw,1.25em);}
+.msec p{opacity:.92;line-height:1.75;font-size:clamp(.85em,1.4vw,1em);font-weight:600;}
+.msec ul{margin:11px 0 0 20px;}
+.msec li{margin:7px 0;font-weight:600;line-height:1.55;font-size:clamp(.8em,1.3vw,.96em);opacity:.92;}
+.cct-svg{width:100%;max-width:320px;margin:14px auto;display:block;background:rgba(0,0,0,.55);padding:14px;border-radius:13px;border:2px solid rgba(102,126,234,.3);}
+.clr-tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:clamp(.75em,1.3vw,.92em);}
+.clr-tbl th{background:linear-gradient(135deg,#667eea,#f093fb);color:#fff;padding:10px 14px;font-weight:900;text-align:left;}
+.clr-tbl td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.08);font-weight:700;opacity:.92;}
+.clr-tbl tr:hover td{background:rgba(102,126,234,.18);}
+.clr-sample{display:inline-block;width:26px;height:18px;border-radius:5px;margin-right:10px;border:1px solid rgba(255,255,255,.35);vertical-align:middle;}
+/* ══ INFO BOX ══ */
+.info-box{
+background:linear-gradient(135deg,rgba(102,126,234,.12),rgba(6,182,212,.1));
+border:2px solid rgba(102,126,234,.35);border-radius:18px;
+padding:18px 20px;margin-bottom:16px;
+font-size:clamp(.82em,1.6vw,1em);line-height:1.85;font-weight:600;
+box-shadow:0 0 25px rgba(102,126,234,.12);
+}
+</style>
+</head>
+<body>
+<!-- Partículas de fondo -->
+<div class="particles-container">
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div>
+</div>
+<div class="wrap">
+<!-- HEADER ESTILO ELECTROCITY -->
+<div class="hdr">
+<div class="hdr-badge">⚡ NIVEL 1 - RETO 1 ⚡</div>
+<div class="hdr-title">ELECTROCITY - LA PRIMERA LUZ</div>
+<div class="hdr-sub">🎯 Enciende tu Primer LED y Comienza tu Aventura</div>
+<div class="hdr-desc">
+Bienvenido a <span class="info-highlight">ElectroCity</span>. En este primer reto aprenderás los fundamentos de la electricidad.
+Tu misión: Encender tu primera luz conectando un LED a una batería.
+¡Es hora de iluminar la ciudad!
+</div>
+<div class="progress-container">
+<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+</div>
+</div>
+<!-- INFO CARD -->
+<div class="info-card">
+<div class="info-title">⚡ Tu Misión en ElectroCity</div>
+<div class="info-text">
+<strong>Desafío:</strong> Armar un circuito básico con batería, resistencia y LED.<br>
+<strong>Componentes:</strong> Batería 9V, Resistencia 330Ω, LED Rojo<br>
+<strong>Objetivo:</strong> Aprender a construir un circuito eléctrico básico conectando un LED a una batería y comprender cómo fluye la electricidad.
+</div>
+</div>
+<!-- GUÍA -->
+<div class="guide">
+<div class="section-title">⚡ Guía de Componentes</div>
+<div class="comp-grid">
+<div class="comp-card" onclick="showModal('battery')">
+<span class="comp-icon">🔋</span>
+<div class="comp-name">Batería</div>
+<div class="comp-desc">Fuente de energía del circuito</div>
+<span class="comp-tag" style="color:#10b981;border-color:#10b981;">9V</span>
+</div>
+<div class="comp-card" onclick="showModal('resistor')">
+<span class="comp-icon" style="font-size:1.6em;display:block;margin:8px 0;">━━┯━━</span>
+<div class="comp-name">Resistencia</div>
+<div class="comp-desc">Protege el LED limitando corriente</div>
+<span class="comp-tag" style="color:#f97316;border-color:#f97316;">330Ω</span>
+</div>
+<div class="comp-card" onclick="showModal('led')">
+<span class="comp-icon">💡</span>
+<div class="comp-name">LED</div>
+<div class="comp-desc">Emite luz con corriente eléctrica</div>
+<span class="comp-tag" style="color:#ef4444;border-color:#ef4444;">Rojo</span>
+</div>
+</div>
+</div>
+<!-- SCORES -->
+<div class="scores">
+<div class="sc"><div class="sc-label">🔌 Cables</div><div class="sc-val" id="scWires">0/3</div></div>
+<div class="sc"><div class="sc-label">🎯 Progreso</div><div class="sc-val" id="scProg">0%</div></div>
+<div class="sc"><div class="sc-label">💡 LED</div><div class="sc-val" id="scLed">OFF</div></div>
+</div>
+<!-- MAIN -->
+<div class="main-grid">
+<div class="panel">
+<div class="section-title">🎯 Tu Misión</div>
+<div class="mission" id="m1"><span class="mission-num">1</span><span class="mission-txt">Conecta el <strong>+ rojo</strong> de la batería con un <strong>lado de la resistencia</strong></span></div>
+<div class="mission" id="m2"><span class="mission-num">2</span><span class="mission-txt">Conecta el <strong>otro lado de la resistencia</strong> con el <strong>+ del LED</strong> (pata larga)</span></div>
+<div class="mission" id="m3"><span class="mission-num">3</span><span class="mission-txt">Conecta el <strong>− del LED</strong> (pata corta) con el <strong>− negro</strong> de la batería</span></div>
+<div class="instrbox">
+🎯 <strong>3 cables</strong> completan el circuito.<br>
+💡 Pata larga (+) siempre al positivo.<br>
+⚠️ ¡Nunca conectes el LED directo a la batería!
+</div>
+<button class="btn btn-ok" onclick="verify()">✓ VERIFICAR CIRCUITO</button>
+<button class="btn btn-rst" onclick="resetAll()">🔄 REINICIAR</button>
+</div>
+<div class="panel">
+<div class="section-title">⚡ Tablero de Circuitos</div>
+<p style="text-align:center;font-size:.82em;opacity:.75;margin-bottom:12px;">📱 Toca un punto dorado → luego toca otro</p>
+<div class="board-wrap">
+<div id="board">
+<div class="board-hud"><div class="hud-dot"></div><span class="hud-txt">CIRCUITO ACTIVO</span><div class="hud-dot"></div></div>
+<svg id="wire-svg"></svg>
+<!-- BATERÍA -->
+<div class="comp battery" id="cb">
+<div class="cp" data-c="battery" data-t="positive" data-tip="+ Batería" style="top:-24px;left:50%;transform:translateX(-50%);"></div>
+<div class="comp-base">
+<div class="batt-body">
+<div class="batt-lbl">9V</div>
+<div class="batt-sign batt-plus">+</div>
+<div class="batt-sign batt-minus">−</div>
+</div>
+</div>
+<div class="cp" data-c="battery" data-t="negative" data-tip="− Batería" style="bottom:-24px;left:50%;transform:translateX(-50%);"></div>
+</div>
+<!-- RESISTENCIA -->
+<div class="comp resistor" id="cr">
+<div class="cp" data-c="resistor" data-t="left" data-tip="Lado Izq." style="top:50%;left:-22px;transform:translateY(-50%);"></div>
+<div class="comp-base" style="padding:7px 5px;">
+<div style="position:relative;">
+<div class="res-wire res-wl"></div>
+<div class="res-body"><div class="res-lbl">330Ω</div></div>
+<div class="res-wire res-wr"></div>
+</div>
+</div>
+<div class="cp" data-c="resistor" data-t="right" data-tip="Lado Der." style="top:50%;right:-22px;transform:translateY(-50%);"></div>
+</div>
+<!-- LED -->
+<div class="comp led" id="cl">
+<div class="led-sign led-sp">+</div>
+<div class="cp" data-c="led" data-t="positive" data-tip="+ LED (pata larga)" style="top:-24px;left:14px;"></div>
+<div class="comp-base" style="border-radius:50% 50% 14px 14px;padding:7px;">
+<div class="led-body"></div>
+</div>
+<div class="cp" data-c="led" data-t="negative" data-tip="− LED (pata corta)" style="bottom:-23px;right:14px;"></div>
+<div class="led-sign led-sn">−</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- INFO -->
+<div class="info-box">
+La <strong>resistencia 330Ω</strong> es esencial: limita la corriente que llega al LED para que no se queme. Sin ella, el LED recibiría demasiada energía y se dañaría al instante. El flujo correcto es: batería → resistencia → LED → batería.
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<!-- CELEBRACIÓN -->
+<div class="overlay" id="celeb">
+<div class="celeb">
+<button class="celeb-x" onclick="closeC()">✕</button>
+<span class="celeb-emoji">🎉💡✨</span>
+<div class="celeb-title">¡MISIÓN CUMPLIDA!</div>
+<div class="celeb-txt">
+🌟 ¡Felicitaciones, nuevo ingeniero de ElectroCity! 🌟<br><br>
+Has completado tu primer circuito eléctrico.<br>
+<strong>¡El LED ahora está ENCENDIDO!</strong> 💡<br><br>
+<strong>¡Has completado el Reto 1!</strong><br>
+¡Estás listo para el siguiente desafío!
+</div>
+<button class="btn btn-ok" onclick="closeC()">🚀 CONTINUAR</button>
+</div>
+</div>
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal()">×</button>
+<div id="modal-body"></div>
+</div>
+</div>
+<script>
+// ══════════ DATOS EDUCATIVOS ══════════
+const INFO={
+battery:{title:'🔋 Batería — Fuente de Energía',sym:'🔋',secs:[
+{h:'¿Qué es?',p:'Almacena <strong>energía química</strong> y la convierte en <strong>eléctrica</strong>. Es el corazón del circuito.'},
+{h:'Terminales',ul:['<strong>Positivo (+):</strong> Marcado rojo. La corriente sale de aquí.','<strong>Negativo (−):</strong> Marcado negro. La corriente regresa aquí.','<strong>9V:</strong> La fuerza que empuja los electrones.']},
+{h:'Símbolo',svg:'<svg class="cct-svg" viewBox="0 0 120 60"><line x1="10" y1="30" x2="35" y2="30" stroke="#4facfe" stroke-width="3"/><line x1="35" y1="12" x2="35" y2="48" stroke="#ef4444" stroke-width="5"/><line x1="47" y1="18" x2="47" y2="42" stroke="#4facfe" stroke-width="3"/><line x1="60" y1="12" x2="60" y2="48" stroke="#ef4444" stroke-width="5"/><line x1="72" y1="18" x2="72" y2="42" stroke="#4facfe" stroke-width="3"/><line x1="72" y1="30" x2="110" y2="30" stroke="#4facfe" stroke-width="3"/><text x="35" y="8" font-size="13" font-weight="bold" fill="#ef4444" text-anchor="middle">+</text><text x="72" y="58" font-size="13" font-weight="bold" fill="#e2e8f0" text-anchor="middle">−</text></svg>'},
+{h:'⚠️ Seguridad',p:'<strong>Nunca conectes los dos polos directamente</strong> sin componentes en medio. Causas un cortocircuito peligroso.'}
+]},
+resistor:{title:'━━┯━━ Resistencia — El Protector',sym:'━━┯━━',secs:[
+{h:'¿Qué es?',p:'Dificulta el paso de corriente. Como estrechar una tubería para reducir el flujo de agua.'},
+{h:'Función',ul:['Protege al LED de recibir demasiada corriente.','Sin ella, el LED se quemaría en segundos.','Convierte el exceso de energía en calor.']},
+{h:'🎨 Código de Colores',tbl:'<table class="clr-tbl"><thead><tr><th>Color</th><th>Dígito</th><th>Multiplicador</th></tr></thead><tbody><tr><td><span class="clr-sample" style="background:#000"></span>Negro</td><td>0</td><td>×1</td></tr><tr><td><span class="clr-sample" style="background:#8B4513"></span>Café</td><td>1</td><td>×10</td></tr><tr><td><span class="clr-sample" style="background:#FF0000"></span>Rojo</td><td>2</td><td>×100</td></tr><tr><td><span class="clr-sample" style="background:#FFA500"></span>Naranja</td><td>3</td><td>×1K</td></tr><tr><td><span class="clr-sample" style="background:#FFFF00;border-color:#888"></span>Amarillo</td><td>4</td><td>×10K</td></tr><tr><td><span class="clr-sample" style="background:#00C000"></span>Verde</td><td>5</td><td>×100K</td></tr></tbody></table><div style="background:rgba(255,255,255,.08);padding:10px;border-radius:9px;margin-top:10px;"><p style="color:#ffd700;font-weight:900;">📌 330Ω = Naranja(3)+Naranja(3)+Café(×10) = 33×10 = <strong style="color:#fff">330Ω</strong></p></div>'},
+{h:'🎓 Dato curioso',p:'¡Tu celular tiene cientos de resistencias! Son uno de los componentes más usados en electrónica.'}
+]},
+led:{title:'💡 LED — Diodo Emisor de Luz',sym:'💡',secs:[
+{h:'¿Qué significa LED?',p:'<strong>LED</strong> = Light Emitting Diode = <strong>Diodo Emisor de Luz</strong>. Convierte electricidad en luz eficientemente.'},
+{h:'Polaridad',ul:['<strong>Pata Larga (+) ÁNODO:</strong> Va al lado positivo.','<strong>Pata Corta (−) CÁTODO:</strong> Va al lado negativo.','Conectado al revés no funciona, pero no se daña.','Siempre necesita resistencia para no quemarse.']},
+{h:'Símbolo',svg:'<svg class="cct-svg" viewBox="0 0 160 110"><line x1="10" y1="55" x2="42" y2="55" stroke="#4facfe" stroke-width="4"/><polygon points="42,33 42,77 82,55" fill="none" stroke="#f87171" stroke-width="4"/><line x1="82" y1="33" x2="82" y2="77" stroke="#f87171" stroke-width="4"/><line x1="82" y1="55" x2="120" y2="55" stroke="#4facfe" stroke-width="4"/><line x1="66" y1="24" x2="74" y2="10" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/><line x1="76" y1="24" x2="84" y2="10" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/><text x="30" y="100" font-size="11" font-weight="bold" fill="#ef4444" text-anchor="middle">+ ÁNODO</text><text x="100" y="100" font-size="11" font-weight="bold" fill="#e2e8f0" text-anchor="middle">− CÁTODO</text></svg>'},
+{h:'🎓 Historia',p:'El primer LED fue en 1962. Los LEDs azules (1990) fueron tan revolucionarios que ganaron el <strong>Premio Nobel de Física en 2014</strong>.'}
+]}
+};
+// ══════════ VARIABLES ══════════
+let wires=[],selPt=null,colorIdx=0,complete=false;
+let dragEl=null,ox=0,oy=0,dragging=false,tid=null;
+let energyRAF=null;
+const COLORS=['#ef4444','#06b6d4','#4facfe','#ffd700'];
+const MAX=3;
+// ══════════ INIT ══════════
+document.addEventListener('DOMContentLoaded',()=>{
+setupPoints();setupDrag();resizeSVG();
+window.addEventListener('resize',()=>{resizeSVG();redraw();});
+});
+function resizeSVG(){
+const b=document.getElementById('board'),s=document.getElementById('wire-svg');
+s.setAttribute('width',b.scrollWidth||b.offsetWidth);
+s.setAttribute('height',b.scrollHeight||b.offsetHeight);
+}
+// ══════════ MODAL ══════════
+function showModal(key){
+const d=INFO[key];
+let h=`<div class="modal-title">${d.title}</div><span class="modal-sym">${d.sym}</span>`;
+d.secs.forEach(s=>{
+h+=`<div class="msec"><h3>${s.h}</h3>`;
+if(s.p)h+=`<p>${s.p}</p>`;
+if(s.ul){h+='<ul>';s.ul.forEach(i=>h+=`<li>${i}</li>`);h+='</ul>';}
+if(s.svg)h+=s.svg;
+if(s.tbl)h+=s.tbl;
+h+='</div>';
+});
+document.getElementById('modal-body').innerHTML=h;
+document.getElementById('modal').classList.add('active');
+document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('active');document.body.style.overflow='';}
+document.addEventListener('click',e=>{
+if(e.target===document.getElementById('modal'))closeModal();
+if(e.target===document.getElementById('celeb'))closeC();
+});
+// ══════════ PUNTOS ══════════
+function setupPoints(){
+document.querySelectorAll('.cp').forEach(p=>{
+p.addEventListener('click',onPt);
+p.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();onPt(e);},{passive:false});
+});
+}
+function onPt(e){
+e.preventDefault();e.stopPropagation();
+if(dragging)return;
+const p=e.currentTarget||e.target;
+if(!selPt){
+if(wires.length>=MAX){showToast('⚠️ Ya usaste los 3 cables','warning');return;}
+selPt=p;p.classList.add('selected');
+showToast('✓ Seleccionado — elige el punto destino','info');
+} else {
+if(selPt===p){selPt.classList.remove('selected');selPt=null;showToast('❌ Cancelado','info');return;}
+if(selPt.dataset.c===p.dataset.c){selPt.classList.remove('selected');selPt=null;showToast('❌ Mismo componente — elige otro','error');return;}
+addWire(selPt,p);
+selPt.classList.remove('selected');
+p.classList.add('connected');selPt.classList.add('connected');
+flashPoint(p);flashPoint(selPt);
+selPt=null;
+updateUI();updateProg();checkMissions();
+}
+}
+function flashPoint(pt){
+pt.classList.remove('flash');
+void pt.offsetWidth;
+pt.classList.add('flash');
+setTimeout(()=>pt.classList.remove('flash'),550);
+}
+// ══════════ DRAG ══════════
+function setupDrag(){
+document.querySelectorAll('.comp').forEach(c=>{
+c.addEventListener('mousedown',startD);
+c.addEventListener('touchstart',startD,{passive:false});
+});
+document.addEventListener('mousemove',doD);
+document.addEventListener('touchmove',doD,{passive:false});
+document.addEventListener('mouseup',stopD);
+document.addEventListener('touchend',stopD);
+document.addEventListener('touchcancel',stopD);
+}
+function startD(e){
+const t=e.target;
+if(t.classList.contains('cp'))return;
+e.preventDefault();
+dragEl=e.currentTarget;dragging=false;
+const r=dragEl.getBoundingClientRect();
+if(e.type==='touchstart'){const tc=e.touches[0];tid=tc.identifier;ox=tc.clientX-r.left;oy=tc.clientY-r.top;}
+else{ox=e.clientX-r.left;oy=e.clientY-r.top;}
+}
+function doD(e){
+if(!dragEl)return;e.preventDefault();
+let cx,cy;
+if(e.type==='touchmove'){const t=Array.from(e.touches).find(t=>t.identifier===tid);if(!t)return;cx=t.clientX;cy=t.clientY;}
+else{cx=e.clientX;cy=e.clientY;}
+dragging=true;dragEl.classList.add('dragging');
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const x=Math.max(5,Math.min(cx-br.left-ox,b.scrollWidth-dragEl.offsetWidth-5));
+const y=Math.max(5,Math.min(cy-br.top-oy,b.scrollHeight-dragEl.offsetHeight-5));
+dragEl.style.left=x+'px';dragEl.style.top=y+'px';dragEl.style.transform='none';
+redraw();
+}
+function stopD(){
+if(dragEl)dragEl.classList.remove('dragging');
+setTimeout(()=>{dragging=false;},60);
+dragEl=null;tid=null;
+}
+// ══════════ CABLES ══════════
+function addWire(p1,p2){
+const t1=p1.dataset.t,t2=p2.dataset.t;
+let c;
+if(['positive'].includes(t1)&&['positive'].includes(t2))c='#ef4444';
+else if(['negative'].includes(t1)&&['negative'].includes(t2))c='#94a3b8';
+else c=COLORS[colorIdx++%COLORS.length];
+wires.push({p1,p2,c});
+redraw();
+showToast(`🔌 Cable ${wires.length} conectado`,'success');
+}
+// ══════════ SVG CABLES ══════════
+function getCenter(pt){
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const r=pt.getBoundingClientRect();
+return{x:r.left-br.left+r.width/2,y:r.top-br.top+r.height/2};
+}
+function makePath(x1,y1,x2,y2){
+const cv=Math.abs(x2-x1)*.35+30;
+return`M${x1} ${y1} C${x1+cv} ${y1},${x2-cv} ${y2},${x2} ${y2}`;
+}
+function drawWire(w){
+const sv=document.getElementById('wire-svg');
+const{x:x1,y:y1}=getCenter(w.p1),{x:x2,y:y2}=getCenter(w.p2);
+const d=makePath(x1,y1,x2,y2);
+const sh=document.createElementNS("http://www.w3.org/2000/svg","path");
+sh.setAttribute('d',d);sh.setAttribute('stroke','rgba(0,0,0,.5)');
+sh.setAttribute('stroke-width','12');sh.setAttribute('fill','none');sh.setAttribute('stroke-linecap','round');
+sh.setAttribute('transform','translate(3,4)');sv.appendChild(sh);
+const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+p.setAttribute('d',d);p.setAttribute('stroke',w.c);p.setAttribute('stroke-width','7');
+p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');
+p.style.filter=`drop-shadow(0 0 6px ${w.c})`;sv.appendChild(p);
+const gl=document.createElementNS("http://www.w3.org/2000/svg","path");
+gl.setAttribute('d',d);gl.setAttribute('stroke','rgba(255,255,255,.3)');
+gl.setAttribute('stroke-width','2.5');gl.setAttribute('fill','none');gl.setAttribute('stroke-linecap','round');sv.appendChild(gl);
+if(complete){
+drawEnergizedWire(sv,d,w.c);
+}
+}
+function drawEnergizedWire(sv,d,color){
+const en=document.createElementNS("http://www.w3.org/2000/svg","path");
+en.setAttribute('d',d);
+en.setAttribute('stroke','rgba(255,255,255,.75)');
+en.setAttribute('stroke-width','3.5');
+en.setAttribute('fill','none');
+en.setAttribute('stroke-linecap','round');
+en.setAttribute('stroke-dasharray','14 42');
+en.setAttribute('stroke-dashoffset','0');
+en.style.filter=`drop-shadow(0 0 5px ${color})`;
+const dur=(Math.random()*0.4+0.65).toFixed(2);
+en.style.animation=`dash ${dur}s linear infinite`;
+sv.appendChild(en);
+}
+(function(){
+const s=document.createElement('style');
+s.textContent='@keyframes dash{to{stroke-dashoffset:-56}}';
+document.head.appendChild(s);
+})();
+function redraw(){
+document.getElementById('wire-svg').innerHTML='';
+wires.forEach(drawWire);
+}
+// ══════════ PARTÍCULAS DE ENERGÍA ══════════
+function spawnEnergyParticle(fromPt,toPt,color){
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const r1=fromPt.getBoundingClientRect(),r2=toPt.getBoundingClientRect();
+const x1=r1.left-br.left+r1.width/2,y1=r1.top-br.top+r1.height/2;
+const x2=r2.left-br.left+r2.width/2,y2=r2.top-br.top+r2.height/2;
+const dot=document.createElement('div');
+dot.className='energy-particle';
+dot.style.cssText=`background:${color};color:${color};width:13px;height:13px;left:${x1}px;top:${y1}px;`;
+b.appendChild(dot);
+const start=performance.now();
+const dur=650+Math.random()*350;
+const cv=Math.abs(x2-x1)*.35+30;
+function step(now){
+const t=Math.min((now-start)/dur,1);
+const u=1-t;
+const cx1b=x1+cv,cy1b=y1,cx2b=x2-cv,cy2b=y2;
+const px=u*u*u*x1+3*u*u*t*cx1b+3*u*t*t*cx2b+t*t*t*x2;
+const py=u*u*u*y1+3*u*u*t*cy1b+3*u*t*t*cy2b+t*t*t*y2;
+dot.style.left=(px-6.5)+'px';dot.style.top=(py-6.5)+'px';
+if(t<1)requestAnimationFrame(step);
+else dot.remove();
+}
+requestAnimationFrame(step);
+}
+function runEnergyAnimation(){
+for(let rep=0;rep<3;rep++){
+wires.forEach((w,i)=>{
+setTimeout(()=>{
+spawnEnergyParticle(w.p1,w.p2,w.c);
+spawnEnergyParticle(w.p2,w.p1,w.c);
+},rep*380+i*90);
+});
+}
+}
+// ══════════ UI ══════════
+function updateUI(){
+document.getElementById('scWires').textContent=wires.length+'/'+MAX;
+document.getElementById('scLed').textContent=document.getElementById('cl').classList.contains('active')?'✅ ON':'❌ OFF';
+}
+function updateProg(){document.getElementById('prog').style.width=(wires.length/MAX*100)+'%';document.getElementById('scProg').textContent=Math.round((wires.length/MAX)*100)+'%';}
+// ══════════ MISIONES ══════════
+function buildConn(){
+const c={};
+wires.forEach(w=>{
+const k1=w.p1.dataset.c+'-'+w.p1.dataset.t;
+const k2=w.p2.dataset.c+'-'+w.p2.dataset.t;
+if(!c[k1])c[k1]=[];if(!c[k2])c[k2]=[];
+c[k1].push(k2);c[k2].push(k1);
+});
+return c;
+}
+function chk(c,a,b){return c[a]?c[a].includes(b):false;}
+function checkMissions(){
+const c=buildConn();
+const m=[
+chk(c,'battery-positive','resistor-left')||chk(c,'battery-positive','resistor-right'),
+(chk(c,'resistor-left','led-positive')&&!chk(c,'resistor-right','led-positive'))||(chk(c,'resistor-right','led-positive')&&!chk(c,'resistor-left','led-positive')),
+chk(c,'led-negative','battery-negative')
+];
+['m1','m2','m3'].forEach((id,i)=>document.getElementById(id).classList.toggle('done',m[i]));
+}
+// ══════════ VERIFICAR ══════════
+function verify(){
+if(wires.length<MAX){showToast(`❌ Faltan ${MAX-wires.length} cable(s)`,'error');return;}
+const c=buildConn();
+const m1=chk(c,'battery-positive','resistor-left')||chk(c,'battery-positive','resistor-right');
+const m2=(chk(c,'resistor-left','led-positive')&&!chk(c,'resistor-right','led-positive'))||(chk(c,'resistor-right','led-positive')&&!chk(c,'resistor-left','led-positive'));
+const m3=chk(c,'led-negative','battery-negative');
+if(m1&&m2&&m3){
+complete=true;
+// ✅ ENCENDER EL LED AUTOMÁTICAMENTE
+document.getElementById('cl').classList.add('active');
+document.getElementById('celeb').classList.add('active');
+confetti();
+showToast('✅ ¡CORRECTO! Circuito completado - LED ENCENDIDO','success');
+runEnergyAnimation();
+} else {
+complete=false;
+document.getElementById('cl').classList.remove('active');
+let msg='❌ Revisa: ';
+if(!m1)msg+='Batería(+)→Resistencia. ';
+if(!m2)msg+='Resistencia→LED(+). ';
+if(!m3)msg+='LED(−)→Batería(−).';
+showToast(msg,'error');
+}
+updateUI();
+}
+// ══════════ RESET ══════════
+function resetAll(){
+wires=[];colorIdx=0;
+document.getElementById('wire-svg').innerHTML='';
+document.querySelectorAll('.cp').forEach(p=>p.classList.remove('connected','selected','flash'));
+selPt=null;complete=false;
+document.getElementById('cl').classList.remove('active');
+['m1','m2','m3'].forEach(id=>document.getElementById(id).classList.remove('done'));
+updateUI();updateProg();
+showToast('🔄 Reiniciado — ¡Inténtalo de nuevo!','info');
+}
+// ══════════ CONFETTI ══════════
+function confetti(){
+const cols=['#f093fb','#ffd700','#10b981','#06b6d4','#a855f7','#f472b6','#22d3ee','#fb923c'];
+for(let i=0;i<85;i++){
+const c=document.createElement('div');c.className='confetti';
+c.style.cssText=`left:${Math.random()*100}%;background:${cols[i%8]};animation-delay:${Math.random()*2.8}s;animation-duration:${Math.random()*2.2+3.5}s;width:${Math.random()*11+9}px;height:${Math.random()*11+9}px;`;
+document.body.appendChild(c);setTimeout(()=>c.remove(),6500);
+}
+}
+// ══════════ TOAST ══════════
+function closeC(){document.getElementById('celeb').classList.remove('active');}
+let toastT;
+function showToast(msg,type){
+const el=document.getElementById('toast');
+el.textContent=msg;el.className='toast '+type;
+clearTimeout(toastT);
+requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+toastT=setTimeout(()=>el.classList.remove('show'),4500);
+}
+</script>
+</body>
+</html>
