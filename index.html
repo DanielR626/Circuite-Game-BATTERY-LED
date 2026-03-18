@@ -3,768 +3,1377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>⚡ Reto 1 - Nivel 1 | ElectroCity - La Primera Luz</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>🎮 Laboratorio de Electrónica - Construye tu Circuito LED</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
---bg:#0f172a;
---green:#39ff14;--cyan:#00ffff;--pink:#ff1493;
---yellow:#ffd700;--red:#ff4757;--blue:#4facfe;--orange:#ff9800;
---purple:#9b59b6;--electric:#00ff88;
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
 }
-body{
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-min-height:100vh;padding:12px;color:#fff;overflow-x:hidden;
-position:relative;
+body {
+font-family: 'Poppins', sans-serif;
+background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+min-height: 100vh;
+padding: 20px;
+position: relative;
+overflow-x: hidden;
+-webkit-tap-highlight-color: transparent;
+touch-action: pan-y;
 }
-/* ══ FONDO ANIMADO CON PARTÍCULAS ══ */
-body::before{
-content:'';position:fixed;inset:0;
-background-image:
-repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 50px),
-repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 50px);
-pointer-events:none;z-index:0;
+/* Prevent iOS double-tap zoom */
+button, a, .connection-point, .component {
+touch-action: manipulation;
 }
-/* Partículas flotantes doradas */
-.particles-container{
-position:fixed;inset:0;pointer-events:none;z-index:1;
-overflow:hidden;
+/* Animated background particles */
+.particles {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 0;
 }
-.particle{
-position:absolute;width:6px;height:6px;
-background:radial-gradient(circle,#ffd700,#ffed4e);
-border-radius:50%;
-box-shadow:0 0 15px #ffd700,0 0 30px rgba(255,215,0,.5);
-animation:float 18s infinite;
-opacity:.6;
+.particle {
+position: absolute;
+width: 10px;
+height: 10px;
+background: rgba(255, 255, 255, 0.3);
+border-radius: 50%;
+animation: float 15s infinite;
 }
-.particle:nth-child(1){left:10%;animation-delay:0s;animation-duration:15s;}
-.particle:nth-child(2){left:20%;animation-delay:3s;animation-duration:17s;}
-.particle:nth-child(3){left:30%;animation-delay:6s;animation-duration:19s;}
-.particle:nth-child(4){left:40%;animation-delay:2s;animation-duration:16s;}
-.particle:nth-child(5){left:50%;animation-delay:5s;animation-duration:18s;}
-.particle:nth-child(6){left:60%;animation-delay:8s;animation-duration:20s;}
-.particle:nth-child(7){left:70%;animation-delay:4s;animation-duration:17s;}
-.particle:nth-child(8){left:80%;animation-delay:7s;animation-duration:19s;}
-.particle:nth-child(9){left:90%;animation-delay:1s;animation-duration:16s;}
-.particle:nth-child(10){left:15%;animation-delay:9s;animation-duration:18s;}
-@keyframes float{
-0%{transform:translateY(100vh) scale(0);opacity:0;}
-15%{opacity:.6;}
-85%{opacity:.6;}
-100%{transform:translateY(-100vh) scale(1);opacity:0;}
+@keyframes float {
+0%, 100% {
+transform: translateY(0) rotate(0deg);
+opacity: 0;
 }
-/* Chispas brillantes */
-.spark{
-position:fixed;width:3px;height:3px;
-background:#fff;
-border-radius:50%;
-box-shadow:0 0 10px #fff,0 0 20px #ffd700;
-animation:sparkle 4s infinite;
-pointer-events:none;z-index:2;
+10% {
+opacity: 1;
 }
-@keyframes sparkle{
-0%,100%{opacity:0;transform:scale(0);}
-50%{opacity:1;transform:scale(1.5);}
+90% {
+opacity: 1;
 }
-.wrap{max-width:1200px;margin:0 auto;position:relative;z-index:10;}
-/* ══ HEADER ══ */
-.hdr{
-background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.1));
-border:3px solid rgba(255,215,0,.5);border-radius:24px;
-padding:24px 20px;text-align:center;margin-bottom:16px;
-box-shadow:0 0 40px rgba(255,215,0,.3),0 8px 32px rgba(0,0,0,.4);
-position:relative;overflow:hidden;
+100% {
+transform: translateY(-100vh) rotate(360deg);
+opacity: 0;
 }
-.hdr::before{
-content:'';position:absolute;top:0;left:-100%;
-width:100%;height:100%;
-background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
-animation:shimmer 3s infinite;
 }
-@keyframes shimmer{
-0%{left:-100%;}
-100%{left:100%;}
+.container {
+max-width: 1400px;
+margin: 0 auto;
+position: relative;
+z-index: 1;
 }
-.hdr-badge{
-display:inline-block;
-background:linear-gradient(135deg,#f093fb,#667eea);
-padding:8px 24px;border-radius:20px;
-font-size:.8em;font-weight:900;
-margin-bottom:12px;letter-spacing:2px;
-box-shadow:0 0 20px rgba(240,147,251,.5);
-animation:pulse 2.5s infinite;
+/* Header with game style */
+.game-header {
+background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+border-radius: 20px;
+padding: 25px;
+margin-bottom: 20px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+text-align: center;
+border: 4px solid rgba(255,255,255,0.3);
 }
-@keyframes pulse{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.05);}
+.game-title {
+font-family: 'Press Start 2P', cursive;
+font-size: 2em;
+color: #fff;
+text-shadow: 4px 4px 0 #000;
+margin-bottom: 10px;
+animation: titleBounce 2s ease-in-out infinite;
 }
-.hdr-title{
-font-size:clamp(1.4em,5vw,2.6em);font-weight:900;letter-spacing:2px;
-background:linear-gradient(90deg,#ffd700,#ff6b9d,#4facfe,#ffd700);
-background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-animation:hdrFlow 5s linear infinite;margin-bottom:10px;
-text-shadow:0 0 30px rgba(255,215,0,.4);
+@keyframes titleBounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
 }
-@keyframes hdrFlow{0%{background-position:0%}100%{background-position:300%}}
-.hdr-sub{font-size:clamp(.9em,2.5vw,1.2em);opacity:.95;font-weight:700;margin-bottom:8px;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5);}
-.hdr-desc{font-size:clamp(.75em,1.8vw,.95em);opacity:.9;max-width:800px;margin:0 auto;line-height:1.7;}
-.progress-container{
-background:rgba(0,0,0,.3);border-radius:16px;padding:4px;margin-top:18px;
-border:2px solid rgba(255,255,255,.3);
+.game-subtitle {
+color: #fff;
+font-size: 1.2em;
+font-weight: 600;
+text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
-.progress-bar{height:12px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.2);}
-.progress-fill{height:100%;width:0%;border-radius:10px;background:linear-gradient(90deg,#f093fb,#ffd700,#4facfe);transition:width .5s ease;box-shadow:0 0 15px rgba(240,147,251,.5);}
-/* ══ INFO CARD ══ */
-.info-card{
-background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.1));
-border:2px solid rgba(255,255,255,.4);border-radius:20px;
-padding:18px;margin-bottom:16px;
-box-shadow:0 0 25px rgba(255,255,255,.15);
-position:relative;overflow:hidden;
+/* Score panel */
+.score-panel {
+display: flex;
+gap: 15px;
+margin-bottom: 20px;
+flex-wrap: wrap;
 }
-.info-card::before{
-content:'💡';position:absolute;top:10px;right:15px;
-font-size:2em;opacity:.2;animation:rotate 12s linear infinite;
+.score-card {
+flex: 1;
+min-width: 200px;
+background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+border-radius: 15px;
+padding: 20px;
+color: #fff;
+text-align: center;
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+border: 3px solid rgba(255,255,255,0.3);
+transform: translateY(0);
+transition: transform 0.3s;
 }
-@keyframes rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.info-title{
-font-size:clamp(1em,2.5vw,1.3em);font-weight:900;
-color:#fff;margin-bottom:10px;
-display:flex;align-items:center;gap:10px;
+.score-card:hover {
+transform: translateY(-5px);
 }
-.info-text{font-size:clamp(.8em,1.6vw,.95em);line-height:1.7;opacity:.95;}
-.info-highlight{
-display:inline-block;
-background:rgba(255,215,0,.2);
-padding:3px 12px;border-radius:8px;
-font-weight:900;color:#ffd700;
-border:1px solid rgba(255,215,0,.4);
+.score-label {
+font-size: 0.9em;
+font-weight: 600;
+margin-bottom: 5px;
+text-transform: uppercase;
 }
-/* ══ GUÍA ══ */
-.guide{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);border-radius:18px;padding:18px 14px;margin-bottom:16px;}
-.section-title{
-font-size:clamp(1em,2.6vw,1.4em);font-weight:900;color:#fff;
-text-shadow:0 0 15px rgba(255,255,255,.35);text-align:center;margin-bottom:16px;
-padding-bottom:10px;border-bottom:2px solid rgba(255,255,255,.3);
+.score-value {
+font-size: 2.5em;
+font-weight: 900;
+text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
 }
-.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;}
-.comp-card{
-background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.25);
-border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;
-transition:all .3s;position:relative;overflow:hidden;
+/* Main grid */
+.game-grid {
+display: grid;
+grid-template-columns: 350px 1fr;
+gap: 20px;
+margin-bottom: 20px;
 }
-.comp-card:hover{transform:translateY(-7px);border-color:#ffd700;box-shadow:0 0 30px rgba(255,215,0,.4);}
-.comp-icon{font-size:clamp(2.2em,5vw,3.2em);display:block;margin-bottom:10px;}
-.comp-name{font-weight:900;font-size:clamp(.9em,2vw,1.15em);margin-bottom:6px;}
-.comp-desc{font-size:clamp(.72em,1.4vw,.88em);opacity:.85;line-height:1.5;}
-.comp-tag{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:900;border:2px solid;}
-/* ══ SCORES ══ */
-.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
-.sc{
-background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(240,147,251,.12));
-border:2px solid rgba(139,92,246,.45);border-radius:16px;
-padding:16px 10px;text-align:center;
-box-shadow:0 0 18px rgba(255,215,0,.18);
-transition:transform .3s;
+/* Responsive Design */
+@media (max-width: 1100px) {
+.game-grid {
+grid-template-columns: 1fr;
 }
-.sc:hover{transform:translateY(-4px);}
-.sc-label{font-size:clamp(.68em,1.4vw,.85em);opacity:.9;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.2px;}
-.sc-val{font-size:clamp(1.2em,2.6vw,2em);font-weight:900;color:#ffd700;text-shadow:0 0 15px rgba(255,215,0,.6);}
-/* ══ MAIN GRID ══ */
-.main-grid{display:grid;gap:16px;margin-bottom:16px;}
-@media(min-width:900px){.main-grid{grid-template-columns:340px 1fr;}}
-/* ══ PANEL ══ */
-.panel{background:rgba(255,255,255,.95);border:2px solid rgba(255,255,255,.3);border-radius:20px;padding:20px 16px;color:#333;}
-/* ══ MISIONES ══ */
-.mission{
-display:flex;align-items:center;gap:14px;
-background:linear-gradient(135deg,#a8edea,#fed6e3);border:2px solid #fff;
-border-radius:14px;padding:16px 14px;margin:12px 0;
-transition:all .35s;position:relative;overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,.1);
+#protoboard-container {
+min-height: 500px;
 }
-.mission.done{background:linear-gradient(135deg,#84fab0,#8fd3f4);border-color:rgba(57,255,20,.6);}
-.mission.done .mission-num{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 0 18px #10b981;}
-.mission-num{
-min-width:38px;height:38px;border-radius:50%;
-background:linear-gradient(135deg,#667eea,#f093fb);
-display:flex;align-items:center;justify-content:center;
-font-weight:900;font-size:.95em;flex-shrink:0;color:#fff;
-border:2px solid rgba(255,255,255,.5);
-box-shadow:0 0 15px rgba(102,126,234,.4);
-transition:all .3s;
 }
-.mission-txt{font-size:clamp(.78em,1.5vw,.95em);font-weight:700;line-height:1.6;color:#333;}
-.mission-txt strong{color:#764ba2;}
-.instrbox{
-background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,215,0,.1));
-border:2px solid rgba(255,152,0,.45);
-border-radius:16px;padding:16px;margin:16px 0;
-font-size:clamp(.78em,1.5vw,.92em);line-height:1.9;font-weight:700;color:#333;
-box-shadow:0 0 25px rgba(255,152,0,.15);
+@media (max-width: 768px) {
+body {
+padding: 10px;
 }
-.btn{
-width:100%;padding:16px;border:none;border-radius:50px;
-font-weight:900;font-size:clamp(.88em,1.8vw,1.05em);
-text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;
-margin:8px 0;transition:all .25s;
-position:relative;overflow:hidden;
+.game-title {
+font-size: 1.3em;
 }
-.btn:hover{transform:translateY(-4px);}
-.btn:active{transform:scale(.98);}
-.btn-ok{
-background:linear-gradient(135deg,#10b981,#059669);
-color:#fff;box-shadow:0 0 25px rgba(16,185,129,.4);
+.game-subtitle {
+font-size: 1em;
 }
-.btn-rst{
-background:linear-gradient(135deg,#ffecd2,#fcb69f);color:#333;
-border:2px solid rgba(255,152,0,.3);
+.game-header {
+padding: 20px 15px;
 }
-/* ══ PROTOBOARD ══ */
-.board-wrap{overflow:auto;border-radius:18px;}
-#board{
-position:relative;width:100%;min-height:480px;
-border-radius:18px;overflow:visible;
-background:linear-gradient(160deg,#1e3c72,#2a5298);
-border:3px solid rgba(255,255,255,.4);
-box-shadow:0 0 40px rgba(102,126,234,.25),inset 0 0 70px rgba(0,0,0,.4);
+.score-panel {
+flex-direction: column;
 }
-#board::before{
-content:'';position:absolute;inset:0;
-background-image:
-repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 32px),
-repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 32px);
-pointer-events:none;border-radius:18px;
+.score-card {
+min-width: 100%;
 }
-.board-hud{
-position:absolute;top:14px;left:50%;transform:translateX(-50%);
-background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);
-border-radius:30px;padding:8px 20px;
-display:flex;align-items:center;gap:12px;z-index:20;
-box-shadow:0 0 25px rgba(255,255,255,.25);
+.panel {
+padding: 15px;
 }
-.hud-dot{width:9px;height:9px;border-radius:50%;background:#10b981;box-shadow:0 0 12px #10b981;animation:blink 1.2s infinite;}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.25);}}
-.hud-txt{font-size:.65em;font-weight:900;color:#10b981;text-shadow:0 0 10px #10b981;white-space:nowrap;letter-spacing:1.8px;}
-#wire-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible;}
-/* ══ COMPONENTES ══ */
-.comp{position:absolute;z-index:10;cursor:grab;}
-.comp:active{cursor:grabbing;}
-.comp.dragging{opacity:.9;z-index:100;filter:brightness(1.2);}
-.comp-base{
-background:linear-gradient(135deg,rgba(30,60,114,.95),rgba(42,82,152,.95));
-border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:10px;
-box-shadow:0 8px 22px rgba(0,0,0,.5),0 0 18px rgba(102,126,234,.2);
+.panel-title {
+font-size: 1.1em;
 }
-/* Batería */
-.battery{width:88px;text-align:center;}
-.batt-body{
-width:72px;height:118px;
-background:linear-gradient(180deg,#10b981,#059669);
-border:3px solid rgba(16,185,129,.6);border-radius:12px;
-position:relative;margin:0 auto;
-box-shadow:0 0 22px rgba(16,185,129,.4);
+#protoboard-container {
+padding: 20px;
+min-height: 450px;
 }
-.batt-body::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:22px;height:12px;background:#64748b;border-radius:4px 4px 0 0;}
-.batt-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;font-size:1.05em;text-shadow:0 0 12px #fff;}
-.batt-sign{position:absolute;font-size:.8em;font-weight:900;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;}
-.batt-plus{top:8px;right:5px;color:#ef4444;border-color:#ef4444;box-shadow:0 0 10px #ef4444;}
-.batt-minus{bottom:8px;right:5px;color:#e2e8f0;border-color:#e2e8f0;}
-/* LED */
-.led{width:88px;text-align:center;}
-.led-body{
-width:70px;height:70px;
-background:radial-gradient(circle at 35% 35%,#fecaca,#fca5a5 40%,#ef4444 60%,#dc2626 100%);
-border-radius:50% 50% 46% 46%;position:relative;margin:0 auto;
-border:3px solid rgba(248,113,113,.5);
-box-shadow:0 0 22px rgba(239,68,68,.3),0 8px 18px rgba(0,0,0,.45);transition:all .4s;
+/* Smaller components on mobile */
+.battery {
+width: 70px;
+height: 120px;
 }
-.led-body::before{content:'';position:absolute;top:12px;left:12px;width:28px;height:28px;background:radial-gradient(circle,rgba(255,255,255,.9),transparent);border-radius:50%;}
-.led.active .led-body{
-background:radial-gradient(circle at 35% 35%,#fca5a5,#f87171 40%,#ef4444 60%,#dc2626 100%);
-box-shadow:0 0 40px #ef4444,0 0 80px rgba(239,68,68,.7),0 0 120px rgba(239,68,68,.4);
-animation:ledg .7s ease-in-out infinite;
+.battery-body {
+width: 55px;
+height: 90px;
+margin: 15px 7px;
 }
-@keyframes ledg{0%,100%{filter:brightness(1.4);transform:scale(1);}50%{filter:brightness(2.3);transform:scale(1.06);}}
-.led-sign{position:absolute;font-size:.8em;font-weight:900;background:rgba(255,255,255,.9);width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;z-index:5;color:#1e293b;}
-.led-sp{top:-6px;left:14px;color:#ef4444;border-color:#ef4444;}
-.led-sn{bottom:-6px;right:14px;color:#64748b;border-color:#64748b;}
-/* ══ PUNTOS CONEXIÓN ══ */
-.cp{
-position:absolute;
-width:clamp(32px,6vw,40px);height:clamp(32px,6vw,40px);
-background:radial-gradient(circle,rgba(255,215,0,.95),rgba(245,158,11,.7));
-border:3px solid rgba(255,255,255,.85);border-radius:50%;
-cursor:pointer;z-index:15;
-box-shadow:0 0 15px rgba(255,215,0,.5),0 0 30px rgba(255,215,0,.25);
-transition:all .25s;
+.battery-label {
+font-size: 1.2em;
 }
-.cp::before{content:'';position:absolute;inset:6px;background:radial-gradient(circle,rgba(255,255,240,.9),rgba(255,215,0,.5));border-radius:50%;}
-.cp:hover{transform:scale(1.55);box-shadow:0 0 32px rgba(255,215,0,.9),0 0 60px rgba(255,215,0,.5);}
-.cp.connected{
-background:radial-gradient(circle,#10b981,#059669);
-border-color:#10b981;
-animation:cpc 1.6s ease-in-out infinite;
-box-shadow:0 0 22px rgba(16,185,129,.8),0 0 40px rgba(16,185,129,.45);
+.resistor {
+width: 100px;
+height: 55px;
 }
-@keyframes cpc{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
-.cp.selected{background:radial-gradient(circle,#06b6d4,#0891b2);border-color:#06b6d4;animation:cps .7s ease-in-out infinite;box-shadow:0 0 28px #06b6d4,0 0 55px rgba(6,182,212,.35);}
-@keyframes cps{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
-/* Posiciones */
-.battery{left:120px;top:50%;transform:translateY(-50%);}
-.led{left:380px;top:50%;transform:translateY(-50%);}
-@media(max-width:700px){
-.battery{left:5%;top:20%;transform:none;}
-.led{left:55%;top:20%;transform:none;}
-#board{min-height:400px;}
+.resistor-body {
+width: 85px;
+height: 30px;
+top: 12px;
 }
-@media(max-width:420px){
-.battery{left:50%;top:15%;transform:translateX(-50%);}
-.led{left:50%;top:55%;transform:translateX(-50%);}
-#board{min-height:500px;}
+.resistor-label {
+font-size: 0.8em;
+top: -25px;
+padding: 4px 10px;
 }
-/* ══ PARTÍCULAS DE ENERGÍA ══ */
-.energy-particle{
-position:absolute;width:12px;height:12px;border-radius:50%;
-pointer-events:none;z-index:30;
-box-shadow:0 0 15px currentColor,0 0 30px currentColor,0 0 45px currentColor;
-animation:none;
+.led {
+width: 65px;
+height: 90px;
 }
-/* ══ TOAST ══ */
-.toast{
-position:fixed;top:95px;right:22px;
-padding:18px 28px;border-radius:18px;
-font-weight:900;font-size:clamp(.82em,2vw,1.02em);
-z-index:9000;transform:translateX(145%);
-transition:transform .45s;
-max-width:min(90vw,420px);border:2px solid rgba(255,255,255,.3);
-box-shadow:0 10px 35px rgba(0,0,0,.5);
+.led-body {
+width: 50px;
+height: 50px;
 }
-.toast.show{transform:translateX(0);}
-.toast.success{background:rgba(16,185,129,.25);color:#10b981;border-color:rgba(16,185,129,.55);}
-.toast.error{background:rgba(239,68,68,.25);color:#f87171;border-color:rgba(239,68,68,.55);}
-.toast.info{background:rgba(6,182,212,.2);color:#06b6d4;border-color:rgba(6,182,212,.45);}
-@media(max-width:600px){.toast{top:75px;right:14px;left:14px;max-width:none;}}
-/* ══ CELEBRACIÓN ══ */
-.overlay{
-position:fixed;inset:0;background:rgba(0,0,0,.92);
-z-index:9999;display:none;align-items:center;justify-content:center;
-padding:22px;backdrop-filter:blur(6px);
+.led-label {
+font-size: 0.8em;
+padding: 4px 10px;
 }
-.overlay.active{display:flex;animation:fadeIn .45s;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.celeb{
-background:linear-gradient(135deg,rgba(102,126,234,.3),rgba(240,147,251,.28));
-border:3px solid rgba(168,85,247,.55);
-padding:clamp(30px,6vw,55px) clamp(24px,5vw,48px);
-border-radius:28px;text-align:center;width:100%;max-width:580px;
-box-shadow:0 0 70px rgba(102,126,234,.45),0 0 110px rgba(240,147,251,.25);
-animation:popIn .55s cubic-bezier(.175,.885,.32,1.275);position:relative;
+.connection-point {
+width: 18px;
+height: 18px;
+border-width: 3px;
 }
-@keyframes popIn{from{transform:scale(.2);opacity:0;}60%{transform:scale(1.09);}to{transform:scale(1);opacity:1;}}
-.celeb-x{
-position:absolute;top:14px;right:14px;
-background:rgba(255,255,255,.18);color:#fff;
-border:2px solid rgba(255,255,255,.35);
-width:42px;height:42px;border-radius:50%;
-font-size:1.25em;cursor:pointer;font-weight:900;
-display:flex;align-items:center;justify-content:center;transition:all .25s;
+/* Adjust component positions for mobile */
+.component.battery {
+left: 30px !important;
+top: 50px !important;
 }
-.celeb-x:hover{background:rgba(239,68,68,.45);transform:rotate(90deg);}
-.celeb-emoji{font-size:clamp(3.2em,8vw,5.5em);display:block;margin-bottom:14px;animation:bounce .85s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
-.celeb-title{
-font-size:clamp(1.35em,4vw,2.5em);font-weight:900;
-background:linear-gradient(90deg,#f093fb,#ffd700,#10b981);
--webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-margin:14px 0;line-height:1.35;
+.component.resistor {
+left: 160px !important;
+top: 90px !important;
 }
-.celeb-txt{font-size:clamp(.88em,1.8vw,1.08em);opacity:.96;line-height:1.85;font-weight:700;margin-bottom:20px;}
-.confetti{position:fixed;width:13px;height:13px;animation:fall 4.8s linear forwards;border-radius:4px;z-index:10000;pointer-events:none;}
-@keyframes fall{0%{transform:translateY(-10vh) rotate(0) scale(1);opacity:1;}100%{transform:translateY(110vh) rotate(720deg) scale(.55);opacity:0;}}
+.component.led {
+left: 300px !important;
+top: 80px !important;
+}
+.btn-game {
+padding: 12px 20px;
+font-size: 0.9em;
+}
+.mission-card {
+padding: 12px;
+}
+.mission-text {
+font-size: 0.9em;
+}
+.component-card {
+padding: 12px;
+gap: 12px;
+}
+.component-emoji {
+font-size: 2.5em;
+}
+.component-name-card {
+font-size: 1em;
+}
+.component-specs {
+font-size: 0.85em;
+}
+.status-toast {
+right: 10px;
+left: 10px;
+top: 80px;
+font-size: 1em;
+padding: 15px 20px;
+}
+.wire-mode-banner {
+bottom: 20px;
+font-size: 1em;
+padding: 15px 25px;
+}
+.celebration-content {
+padding: 30px 20px;
+margin: 0 20px;
+}
+.celebration-emoji {
+font-size: 3em;
+}
+.celebration-title {
+font-size: 1.3em;
+}
+.celebration-text {
+font-size: 1em;
+}
+}
+@media (max-width: 480px) {
+.game-title {
+font-size: 1em;
+letter-spacing: 1px;
+}
+.game-subtitle {
+font-size: 0.85em;
+}
+.score-value {
+font-size: 2em;
+}
+.score-label {
+font-size: 0.8em;
+}
+#protoboard-container {
+min-height: 400px;
+padding: 15px;
+}
+/* Even smaller components for very small screens */
+.battery {
+width: 60px;
+height: 100px;
+}
+.battery-body {
+width: 45px;
+height: 75px;
+margin: 12px 7px;
+}
+.battery-label {
+font-size: 1em;
+}
+.battery-body::before,
+.battery-body::after {
+width: 20px;
+height: 18px;
+font-size: 1em;
+}
+.resistor {
+width: 85px;
+height: 50px;
+}
+.resistor-body {
+width: 70px;
+height: 28px;
+top: 11px;
+}
+.led {
+width: 55px;
+height: 80px;
+}
+.led-body {
+width: 42px;
+height: 42px;
+}
+.connection-point {
+width: 16px;
+height: 16px;
+border-width: 2px;
+}
+/* Compact layout for small phones */
+.component.battery {
+left: 20px !important;
+top: 40px !important;
+}
+.component.resistor {
+left: 120px !important;
+top: 70px !important;
+}
+.component.led {
+left: 230px !important;
+top: 65px !important;
+}
+.panel-title {
+font-size: 1em;
+}
+.mission-number {
+width: 30px;
+height: 30px;
+font-size: 1em;
+border-width: 2px;
+}
+.info-box {
+padding: 15px;
+}
+.info-title {
+font-size: 1em;
+}
+.info-text {
+font-size: 0.85em;
+}
+.hint-bubble {
+padding: 12px 15px;
+font-size: 0.85em;
+}
+.celebration-title {
+font-size: 1.1em;
+}
+.wire-mode-banner {
+font-size: 0.85em;
+padding: 12px 20px;
+}
+}
+/* Landscape mode for mobile devices */
+@media (max-width: 900px) and (orientation: landscape) {
+.score-panel {
+flex-direction: row;
+}
+#protoboard-container {
+min-height: 350px;
+}
+.component.battery {
+left: 40px !important;
+top: 40px !important;
+}
+.component.resistor {
+left: 180px !important;
+top: 70px !important;
+}
+.component.led {
+left: 340px !important;
+top: 60px !important;
+}
+}
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+.connection-point {
+width: 24px;
+height: 24px;
+border-width: 4px;
+}
+.btn-game {
+padding: 15px 25px;
+font-size: 1em;
+}
+.component {
+filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
+}
+}
+.panel {
+background: rgba(255, 255, 255, 0.95);
+border-radius: 20px;
+padding: 25px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+border: 4px solid rgba(255,255,255,0.3);
+}
+.panel-title {
+font-size: 1.4em;
+font-weight: 900;
+color: #667eea;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.panel-title::before {
+content: '';
+width: 8px;
+height: 30px;
+background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+border-radius: 10px;
+}
+/* Protoboard */
+#protoboard-container {
+position: relative;
+background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+border-radius: 20px;
+padding: 40px;
+min-height: 600px;
+box-shadow:
+inset 0 0 50px rgba(0, 0, 0, 0.5),
+0 10px 30px rgba(0, 0, 0, 0.5);
+border: 5px solid rgba(255,255,255,0.3);
+}
+#wire-canvas {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 1;
+}
+/* Components - More colorful and fun */
+.component {
+position: absolute;
+z-index: 10;
+cursor: pointer;
+transition: transform 0.3s ease;
+filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+}
+.component:hover {
+transform: scale(1.05);
+filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.6));
+}
+/* Battery - Fun style */
+.battery {
+width: 90px;
+height: 150px;
+}
+.battery-body {
+width: 70px;
+height: 110px;
+background: linear-gradient(180deg, #43e97b 0%, #38f9d7 100%);
+border: 4px solid #fff;
+border-radius: 15px;
+position: relative;
+margin: 20px 10px;
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+.battery-body::before {
+content: '+';
+position: absolute;
+top: -30px;
+left: 50%;
+transform: translateX(-50%);
+width: 30px;
+height: 25px;
+background: #ff6b6b;
+color: #fff;
+font-weight: 900;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
+font-size: 1.5em;
+border: 3px solid #fff;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.battery-body::after {
+content: '−';
+position: absolute;
+bottom: -30px;
+left: 50%;
+transform: translateX(-50%);
+width: 30px;
+height: 25px;
+background: #4a4a4a;
+color: #fff;
+font-weight: 900;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
+font-size: 1.8em;
+border: 3px solid #fff;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.battery-label {
+text-align: center;
+color: #fff;
+font-weight: 900;
+font-size: 1.5em;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+/* Resistor - Colorful */
+.resistor {
+width: 130px;
+height: 70px;
+}
+.resistor-body {
+width: 110px;
+height: 40px;
+background: linear-gradient(90deg,
+#FFD89B 0%,
+#FFF 15%,
+#FFD89B 25%,
+#8B4513 30%,
+#FFD89B 35%,
+#FFEB3B 40%,
+#FFD89B 45%,
+#FF9800 50%,
+#FFD89B 55%,
+#FFF 70%,
+#FFD89B 100%
+);
+border-radius: 10px;
+border: 3px solid #8B4513;
+position: absolute;
+top: 15px;
+left: 10px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.resistor-label {
+position: absolute;
+top: -30px;
+left: 50%;
+transform: translateX(-50%);
+background: #ff9800;
+color: #fff;
+padding: 5px 15px;
+border-radius: 20px;
+font-size: 0.9em;
+font-weight: 900;
+border: 2px solid #fff;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+/* LED - Super bright and fun */
+.led {
+width: 80px;
+height: 110px;
+}
+.led-body {
+width: 60px;
+height: 60px;
+background: radial-gradient(circle, #ff6b6b 0%, #ee5a6f 60%, #c92a2a 100%);
+border-radius: 50% 50% 45% 45%;
+position: absolute;
+top: 10px;
+left: 10px;
+border: 4px solid #fff;
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+position: relative;
+}
+.led-body::before {
+content: '';
+position: absolute;
+top: 8px;
+left: 8px;
+width: 25px;
+height: 25px;
+background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+border-radius: 50%;
+}
+.led.active .led-body {
+background: radial-gradient(circle, #ff0000 0%, #ff3333 60%, #ff0000 100%);
+box-shadow:
+0 8px 20px rgba(0, 0, 0, 0.5),
+0 0 40px #ff0000,
+0 0 60px #ff0000,
+0 0 80px #ff0000;
+animation: superGlow 0.8s ease-in-out infinite;
+}
+@keyframes superGlow {
+0%, 100% {
+transform: scale(1);
+filter: brightness(1.3);
+}
+50% {
+transform: scale(1.1);
+filter: brightness(1.8);
+}
+}
+.led-label {
+position: absolute;
+bottom: -30px;
+left: 50%;
+transform: translateX(-50%);
+background: #51cf66;
+color: #fff;
+padding: 5px 15px;
+border-radius: 20px;
+font-size: 0.9em;
+font-weight: 900;
+border: 2px solid #fff;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+/* Connection points - Fun and colorful */
+.connection-point {
+position: absolute;
+width: 20px;
+height: 20px;
+background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+border: 4px solid #fff;
+border-radius: 50%;
+cursor: pointer;
+z-index: 15;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+transition: all 0.3s ease;
+}
+.connection-point:hover {
+background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+transform: scale(1.4);
+box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+animation: pointWobble 0.5s ease-in-out;
+}
+@keyframes pointWobble {
+0%, 100% { transform: scale(1.4) rotate(0deg); }
+25% { transform: scale(1.5) rotate(-10deg); }
+75% { transform: scale(1.5) rotate(10deg); }
+}
+.connection-point.connected {
+background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+animation: connectedPulse 1s ease-in-out infinite;
+}
+@keyframes connectedPulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.2); }
+}
+.connection-point.selected {
+background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+animation: selectedJump 0.6s ease-in-out infinite;
+}
+@keyframes selectedJump {
+0%, 100% { transform: scale(1) translateY(0); }
+50% { transform: scale(1.3) translateY(-5px); }
+}
+/* Instructions - Game style */
+.mission-card {
+background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+border-radius: 15px;
+padding: 15px;
+margin: 15px 0;
+border: 3px solid rgba(255,255,255,0.5);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+transition: all 0.3s;
+position: relative;
+overflow: hidden;
+}
+.mission-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+transition: left 0.5s;
+}
+.mission-card:hover::before {
+left: 100%;
+}
+.mission-card.completed {
+background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+transform: scale(1.02);
+}
+.mission-number {
+display: inline-flex;
+width: 35px;
+height: 35px;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color: #fff;
+border-radius: 50%;
+align-items: center;
+justify-content: center;
+margin-right: 10px;
+font-weight: 900;
+font-size: 1.1em;
+border: 3px solid #fff;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.mission-card.completed .mission-number {
+background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+animation: checkmark 0.5s ease;
+}
+@keyframes checkmark {
+0% { transform: scale(0) rotate(0deg); }
+50% { transform: scale(1.2) rotate(180deg); }
+100% { transform: scale(1) rotate(360deg); }
+}
+.mission-card.completed .mission-number::after {
+content: '✓';
+}
+.mission-text {
+font-weight: 600;
+color: #333;
+line-height: 1.6;
+}
+/* Buttons - Super fun */
+.btn-game {
+background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+color: #fff;
+border: none;
+padding: 15px 30px;
+border-radius: 50px;
+cursor: pointer;
+font-family: 'Poppins', sans-serif;
+font-weight: 900;
+font-size: 1em;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 0 8px 20px rgba(245, 87, 108, 0.5);
+border: 3px solid rgba(255,255,255,0.3);
+transition: all 0.3s;
+width: 100%;
+margin: 10px 0;
+}
+.btn-game:hover {
+transform: translateY(-3px) scale(1.05);
+box-shadow: 0 12px 30px rgba(245, 87, 108, 0.7);
+}
+.btn-game:active {
+transform: translateY(0) scale(1);
+}
+.btn-success {
+background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+box-shadow: 0 8px 20px rgba(132, 250, 176, 0.5);
+}
+.btn-danger {
+background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+box-shadow: 0 8px 20px rgba(250, 112, 154, 0.5);
+}
+.btn-warning {
+background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+box-shadow: 0 8px 20px rgba(252, 182, 159, 0.5);
+color: #333;
+}
+/* Status messages - More fun */
+.status-toast {
+position: fixed;
+top: 100px;
+right: 20px;
+padding: 20px 30px;
+border-radius: 20px;
+font-weight: 700;
+font-size: 1.1em;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+z-index: 1000;
+transform: translateX(500px);
+transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+border: 4px solid rgba(255,255,255,0.3);
+max-width: 400px;
+}
+.status-toast.show {
+transform: translateX(0);
+animation: shake 0.5s ease;
+}
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-10px); }
+75% { transform: translateX(10px); }
+}
+.status-toast.success {
+background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+color: #fff;
+}
+.status-toast.error {
+background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+color: #fff;
+}
+.status-toast.info {
+background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+color: #fff;
+}
+/* Celebration overlay */
+.celebration-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.85);
+z-index: 9999;
+display: none;
+align-items: center;
+justify-content: center;
+}
+.celebration-overlay.active {
+display: flex;
+animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+.celebration-content {
+background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+padding: 50px;
+border-radius: 30px;
+text-align: center;
+border: 6px solid rgba(255,255,255,0.3);
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+@keyframes popIn {
+0% { transform: scale(0) rotate(-180deg); }
+100% { transform: scale(1) rotate(0deg); }
+}
+.celebration-emoji {
+font-size: 5em;
+animation: bounce 1s ease-in-out infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-20px); }
+}
+.celebration-title {
+font-family: 'Press Start 2P', cursive;
+font-size: 2em;
+color: #fff;
+margin: 20px 0;
+text-shadow: 4px 4px 0 #000;
+}
+.celebration-text {
+font-size: 1.2em;
+color: #fff;
+margin-bottom: 20px;
+font-weight: 600;
+}
+/* Info box - Prettier */
+.info-box {
+background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+border: 3px solid rgba(255,255,255,0.3);
+border-radius: 15px;
+padding: 20px;
+margin: 20px 0;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+.info-title {
+font-weight: 900;
+color: #333;
+margin-bottom: 10px;
+font-size: 1.2em;
+}
+.info-text {
+color: #555;
+line-height: 1.6;
+font-weight: 600;
+}
+/* Component info cards */
+.component-card {
+background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+border-radius: 15px;
+padding: 15px;
+margin: 10px 0;
+display: flex;
+align-items: center;
+gap: 15px;
+border: 3px solid rgba(255,255,255,0.3);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+transition: transform 0.3s;
+}
+.component-card:hover {
+transform: translateX(5px);
+}
+.component-emoji {
+font-size: 3em;
+filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
+}
+.component-info {
+flex: 1;
+}
+.component-name-card {
+font-weight: 900;
+color: #333;
+font-size: 1.1em;
+margin-bottom: 5px;
+}
+.component-specs {
+color: #555;
+font-weight: 600;
+font-size: 0.9em;
+}
+/* Wire mode indicator */
+.wire-mode-banner {
+position: fixed;
+bottom: 30px;
+left: 50%;
+transform: translateX(-50%);
+background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+color: #fff;
+padding: 20px 40px;
+border-radius: 50px;
+font-weight: 900;
+font-size: 1.2em;
+box-shadow: 0 10px 30px rgba(79, 172, 254, 0.6);
+z-index: 100;
+display: none;
+border: 4px solid rgba(255,255,255,0.3);
+animation: slideUp 0.5s ease;
+}
+.wire-mode-banner.active {
+display: block;
+}
+@keyframes slideUp {
+from {
+transform: translateX(-50%) translateY(200px);
+opacity: 0;
+}
+to {
+transform: translateX(-50%) translateY(0);
+opacity: 1;
+}
+}
+/* Hint bubble */
+.hint-bubble {
+background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+border: 3px solid rgba(255,255,255,0.3);
+border-radius: 20px;
+padding: 15px 20px;
+margin: 15px 0;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+font-weight: 600;
+color: #333;
+position: relative;
+animation: wobble 2s ease-in-out infinite;
+}
+@keyframes wobble {
+0%, 100% { transform: rotate(0deg); }
+25% { transform: rotate(1deg); }
+75% { transform: rotate(-1deg); }
+}
+.hint-bubble::before {
+content: '💡';
+font-size: 1.5em;
+margin-right: 10px;
+}
 </style>
 </head>
 <body>
-<!-- Partículas de fondo -->
-<div class="particles-container">
-<div class="particle"></div><div class="particle"></div><div class="particle"></div>
-<div class="particle"></div><div class="particle"></div><div class="particle"></div>
-<div class="particle"></div><div class="particle"></div><div class="particle"></div>
-<div class="particle"></div>
+<!-- Animated particles -->
+<div class="particles" id="particles"></div>
+<div class="container">
+<!-- Game Header -->
+<div class="game-header">
+<div class="game-title">LABORATORIO LED</div>
+<div class="game-subtitle">Construye tu primer circuito electrónico</div>
 </div>
-<!-- Chispas -->
-<div class="spark" style="top:20%;left:15%;"></div>
-<div class="spark" style="top:60%;left:85%;animation-delay:1s;"></div>
-<div class="spark" style="top:40%;left:50%;animation-delay:2s;"></div>
-<div class="wrap">
-<!-- HEADER -->
-<div class="hdr">
-<div class="hdr-badge">⚡ NIVEL 1 - RETO 1 ⚡</div>
-<div class="hdr-title">ELECTROCITY - LA PRIMERA LUZ</div>
-<div class="hdr-sub">🎯 Enciende tu Primer LED y Comienza tu Aventura</div>
-<div class="hdr-desc">
-Bienvenido a <span class="info-highlight">ElectroCity</span>. En este primer reto aprenderás los fundamentos de la electricidad.
-Tu misión: Encender tu primera luz conectando un LED a una batería.
-¡Es hora de iluminar la ciudad!
+<!-- Score Panel -->
+<div class="score-panel">
+<div class="score-card">
+<div class="score-label">⚡ Conexiones</div>
+<div class="score-value" id="wire-count">0</div>
 </div>
-<div class="progress-container">
-<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+<div class="score-card">
+<div class="score-label">🎯 Progreso</div>
+<div class="score-value" id="progress">0%</div>
+</div>
+<div class="score-card">
+<div class="score-label">⭐ Nivel</div>
+<div class="score-value">1</div>
 </div>
 </div>
-<!-- INFO CARD -->
-<div class="info-card">
-<div class="info-title">⚡ Tu Misión en ElectroCity</div>
-<div class="info-text">
-<strong>Desafío:</strong> Armar un circuito básico con batería y LED.<br>
-<strong>Componentes:</strong> Batería 9V, LED Rojo<br>
-<strong>Objetivo:</strong> Aprender a construir un circuito eléctrico básico conectando un LED a una batería y comprender cómo fluye la electricidad.
-</div>
-</div>
-<!-- GUÍA -->
-<div class="guide">
-<div class="section-title">⚡ Guía de Componentes</div>
-<div class="comp-grid">
-<div class="comp-card">
-<span class="comp-icon">🔋</span>
-<div class="comp-name">Batería</div>
-<div class="comp-desc">Fuente de energía</div>
-<span class="comp-tag" style="color:#10b981;border-color:#10b981;">9V</span>
-</div>
-<div class="comp-card">
-<span class="comp-icon">💡</span>
-<div class="comp-name">LED</div>
-<div class="comp-desc">Emite luz</div>
-<span class="comp-tag" style="color:#ef4444;border-color:#ef4444;">Rojo</span>
-</div>
-</div>
-</div>
-<!-- SCORES -->
-<div class="scores">
-<div class="sc"><div class="sc-label">🔌 Cables</div><div class="sc-val" id="scWires">0/2</div></div>
-<div class="sc"><div class="sc-label">🎯 Progreso</div><div class="sc-val" id="scProg">0%</div></div>
-<div class="sc"><div class="sc-label">💡 LED</div><div class="sc-val" id="scLed">OFF</div></div>
-</div>
-<!-- MAIN -->
-<div class="main-grid">
+<!-- Main Game Grid -->
+<div class="game-grid">
+<!-- Left Panel -->
 <div class="panel">
-<div class="section-title">🎯 Tu Misión</div>
-<div class="mission" id="m1"><span class="mission-num">1</span><span class="mission-txt">Conecta el <strong>+ rojo</strong> de la batería con el <strong>+ del LED</strong> (pata larga)</span></div>
-<div class="mission" id="m2"><span class="mission-num">2</span><span class="mission-txt">Conecta el <strong>− del LED</strong> (pata corta) con el <strong>− negro</strong> de la batería</span></div>
-<div class="instrbox">
-🎯 <strong>2 cables</strong> completan el circuito.<br>
-💡 Pata larga (+) siempre al positivo.<br>
-⚡ ¡Observa las partículas de energía fluir!
+<div class="panel-title">🎮 MISIÓN</div>
+<div class="mission-card" id="mission1">
+<span class="mission-number">1</span>
+<span class="mission-text">Conecta Batería (+) con Resistencia</span>
 </div>
-<button class="btn btn-ok" onclick="verify()">✓ VERIFICAR CIRCUITO</button>
-<button class="btn btn-rst" onclick="resetAll()">🔄 REINICIAR</button>
+<div class="mission-card" id="mission2">
+<span class="mission-number">2</span>
+<span class="mission-text">Conecta Resistencia con LED (+)</span>
 </div>
+<div class="mission-card" id="mission3">
+<span class="mission-number">3</span>
+<span class="mission-text">Conecta LED (-) con Batería (-)</span>
+</div>
+<div class="hint-bubble">
+Haz clic en los puntos dorados para conectar cables
+</div>
+<div class="panel-title" style="margin-top: 30px;">📦 COMPONENTES</div>
+<div class="component-card">
+<div class="component-emoji">🔋</div>
+<div class="component-info">
+<div class="component-name-card">Batería</div>
+<div class="component-specs">9 Voltios DC</div>
+</div>
+</div>
+<div class="component-card">
+<div class="component-emoji">⚡</div>
+<div class="component-info">
+<div class="component-name-card">Resistencia</div>
+<div class="component-specs">330 Ohmios</div>
+</div>
+</div>
+<div class="component-card">
+<div class="component-emoji">💡</div>
+<div class="component-info">
+<div class="component-name-card">LED Rojo</div>
+<div class="component-specs">2V - 20mA</div>
+</div>
+</div>
+<button class="btn-game btn-success" onclick="checkCircuit()">✓ VERIFICAR CIRCUITO</button>
+<button class="btn-game btn-warning" onclick="clearWires()">🔄 LIMPIAR CABLES</button>
+<button class="btn-game btn-danger" onclick="getHint()">💡 DAME UNA PISTA</button>
+</div>
+<!-- Right Panel - Protoboard -->
 <div class="panel">
-<div class="section-title">⚡ Tablero de Circuitos</div>
-<p style="text-align:center;font-size:.82em;opacity:.75;margin-bottom:12px;">📱 Toca un punto dorado → luego toca otro</p>
-<div class="board-wrap">
-<div id="board">
-<div class="board-hud"><div class="hud-dot"></div><span class="hud-txt">CIRCUITO ACTIVO</span><div class="hud-dot"></div></div>
-<svg id="wire-svg"></svg>
-<!-- BATERÍA -->
-<div class="comp battery" id="cb">
-<div class="cp" data-c="battery" data-t="positive" style="top:-24px;left:50%;transform:translateX(-50%);"></div>
-<div class="comp-base">
-<div class="batt-body">
-<div class="batt-lbl">9V</div>
-<div class="batt-sign batt-plus">+</div>
-<div class="batt-sign batt-minus">−</div>
+<div class="panel-title">🔧 PROTOBOARD VIRTUAL</div>
+<div id="protoboard-container">
+<svg id="wire-canvas"></svg>
+<!-- Battery -->
+<div class="component battery" style="left: 60px; top: 80px;">
+<div class="battery-body">
+<div class="battery-label">9V</div>
 </div>
+<div class="connection-point" data-component="battery" data-terminal="positive" style="top: 0; left: 50%; transform: translateX(-50%);"></div>
+<div class="connection-point" data-component="battery" data-terminal="negative" style="bottom: 0; left: 50%; transform: translateX(-50%);"></div>
 </div>
-<div class="cp" data-c="battery" data-t="negative" style="bottom:-24px;left:50%;transform:translateX(-50%);"></div>
+<!-- Resistor -->
+<div class="component resistor" style="left: 250px; top: 130px;">
+<div class="resistor-body"></div>
+<div class="resistor-label">330Ω</div>
+<div class="connection-point" data-component="resistor" data-terminal="left" style="top: 50%; left: 0; transform: translateY(-50%);"></div>
+<div class="connection-point" data-component="resistor" data-terminal="right" style="top: 50%; right: 0; transform: translateY(-50%);"></div>
 </div>
 <!-- LED -->
-<div class="comp led" id="cl">
-<div class="led-sign led-sp">+</div>
-<div class="cp" data-c="led" data-t="positive" style="top:-24px;left:14px;"></div>
-<div class="comp-base" style="border-radius:50% 50% 14px 14px;padding:7px;">
+<div class="component led" style="left: 480px; top: 110px;">
 <div class="led-body"></div>
-</div>
-<div class="cp" data-c="led" data-t="negative" style="bottom:-23px;right:14px;"></div>
-<div class="led-sign led-sn">−</div>
-</div>
-</div>
+<div class="led-label">LED</div>
+<div class="connection-point" data-component="led" data-terminal="positive" style="top: 15px; left: 50%; transform: translateX(-50%);"></div>
+<div class="connection-point" data-component="led" data-terminal="negative" style="bottom: 15px; left: 50%; transform: translateX(-50%);"></div>
 </div>
 </div>
 </div>
 </div>
-<div class="toast" id="toast"></div>
-<!-- CELEBRACIÓN -->
-<div class="overlay" id="celeb">
-<div class="celeb">
-<button class="celeb-x" onclick="closeC()">✕</button>
-<span class="celeb-emoji">🎉💡✨</span>
-<div class="celeb-title">¡MISIÓN CUMPLIDA!</div>
-<div class="celeb-txt">
-🌟 ¡Felicitaciones, nuevo ingeniero de ElectroCity! 🌟<br><br>
-Has completado tu primer circuito eléctrico.<br>
-<strong>¡El LED ahora está ENCENDIDO!</strong> 💡<br><br>
-<strong>¡Has completado el Reto 1!</strong><br>
-¡Estás listo para el siguiente desafío!
+<!-- Info Box -->
+<div class="info-box">
+<div class="info-title">⚠️ REGLA DE ORO</div>
+<div class="info-text">
+<strong>¡NUNCA conectes el LED directamente a la batería!</strong> Siempre debe haber una resistencia entre ellos para proteger el LED. La resistencia controla la corriente y evita que el LED se queme.
 </div>
-<button class="btn btn-ok" onclick="closeC()">🚀 CONTINUAR</button>
+</div>
+</div>
+<!-- Status Toast -->
+<div class="status-toast" id="status-toast"></div>
+<!-- Wire Mode Banner -->
+<div class="wire-mode-banner" id="wire-mode">
+🔌 Haz clic en otro punto para conectar
+</div>
+<!-- Celebration Overlay -->
+<div class="celebration-overlay" id="celebration">
+<div class="celebration-content">
+<div class="celebration-emoji">🎉🎊✨</div>
+<div class="celebration-title">¡GENIAL!</div>
+<div class="celebration-text">¡Has completado el circuito correctamente!<br>¡Eres un ingeniero electrónico!</div>
+<button class="btn-game" onclick="closeCelebration()">CONTINUAR</button>
 </div>
 </div>
 <script>
-// VARIABLES
-let wires=[],selPt=null,colorIdx=0,complete=false;
-let dragEl=null,ox=0,oy=0,dragging=false,tid=null;
-const COLORS=['#ff4757','#06b6d4','#4facfe','#ffd700'];
-const MAX=2;
-// INIT
-document.addEventListener('DOMContentLoaded',()=>{
-setupPoints();setupDrag();resizeSVG();
-window.addEventListener('resize',()=>{resizeSVG();redraw();});
+// Create particles
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+const particle = document.createElement('div');
+particle.className = 'particle';
+particle.style.left = Math.random() * 100 + '%';
+particle.style.animationDelay = Math.random() * 15 + 's';
+particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+particlesContainer.appendChild(particle);
+}
+// Game State
+let wires = [];
+let selectedPoint = null;
+let wireColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#fd79a8'];
+let currentColorIndex = 0;
+let hintsGiven = 0;
+// Sound effects (simple beeps using AudioContext)
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(frequency, duration) {
+const oscillator = audioContext.createOscillator();
+const gainNode = audioContext.createGain();
+oscillator.connect(gainNode);
+gainNode.connect(audioContext.destination);
+oscillator.frequency.value = frequency;
+oscillator.type = 'sine';
+gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+oscillator.start(audioContext.currentTime);
+oscillator.stop(audioContext.currentTime + duration);
+}
+function playConnectSound() {
+playSound(800, 0.1);
+}
+function playSuccessSound() {
+playSound(600, 0.1);
+setTimeout(() => playSound(800, 0.1), 100);
+setTimeout(() => playSound(1000, 0.2), 200);
+}
+function playErrorSound() {
+playSound(200, 0.3);
+}
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+setupConnectionPoints();
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+setTimeout(resizeCanvas, 100);
 });
-function resizeSVG(){
-const b=document.getElementById('board'),s=document.getElementById('wire-svg');
-s.setAttribute('width',b.scrollWidth||b.offsetWidth);
-s.setAttribute('height',b.scrollHeight||b.offsetHeight);
-}
-// PUNTOS
-function setupPoints(){
-document.querySelectorAll('.cp').forEach(p=>{
-p.addEventListener('click',onPt);
-p.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();onPt(e);},{passive:false});
+updateProgress();
 });
+function resizeCanvas() {
+const container = document.getElementById('protoboard-container');
+const canvas = document.getElementById('wire-canvas');
+canvas.setAttribute('width', container.offsetWidth);
+canvas.setAttribute('height', container.offsetHeight);
+redrawWires();
 }
-function onPt(e){
-e.preventDefault();e.stopPropagation();
-if(dragging)return;
-const p=e.currentTarget||e.target;
-if(!selPt){
-if(wires.length>=MAX){showToast('⚠️ Ya usaste los 2 cables','info');return;}
-selPt=p;p.classList.add('selected');
-showToast('✓ Seleccionado — elige el punto destino','info');
-} else {
-if(selPt===p){selPt.classList.remove('selected');selPt=null;showToast('❌ Cancelado','info');return;}
-if(selPt.dataset.c===p.dataset.c){selPt.classList.remove('selected');selPt=null;showToast('❌ Mismo componente — elige otro','error');return;}
-addWire(selPt,p);
-selPt.classList.remove('selected');
-p.classList.add('connected');selPt.classList.add('connected');
-selPt=null;
-updateUI();updateProg();checkMissions();
-}
-}
-// DRAG
-function setupDrag(){
-document.querySelectorAll('.comp').forEach(c=>{
-c.addEventListener('mousedown',startD);
-c.addEventListener('touchstart',startD,{passive:false});
-});
-document.addEventListener('mousemove',doD);
-document.addEventListener('touchmove',doD,{passive:false});
-document.addEventListener('mouseup',stopD);
-document.addEventListener('touchend',stopD);
-}
-function startD(e){
-const t=e.target;
-if(t.classList.contains('cp'))return;
+function setupConnectionPoints() {
+const points = document.querySelectorAll('.connection-point');
+points.forEach(point => {
+point.addEventListener('click', handlePointClick);
+// Add touch support for mobile
+point.addEventListener('touchend', function(e) {
 e.preventDefault();
-dragEl=e.currentTarget;dragging=false;
-const r=dragEl.getBoundingClientRect();
-if(e.type==='touchstart'){const tc=e.touches[0];tid=tc.identifier;ox=tc.clientX-r.left;oy=tc.clientY-r.top;}
-else{ox=e.clientX-r.left;oy=e.clientY-r.top;}
-}
-function doD(e){
-if(!dragEl)return;e.preventDefault();
-let cx,cy;
-if(e.type==='touchmove'){const t=Array.from(e.touches).find(t=>t.identifier===tid);if(!t)return;cx=t.clientX;cy=t.clientY;}
-else{cx=e.clientX;cy=e.clientY;}
-dragging=true;dragEl.classList.add('dragging');
-const b=document.getElementById('board'),br=b.getBoundingClientRect();
-const x=Math.max(5,Math.min(cx-br.left-ox,b.scrollWidth-dragEl.offsetWidth-5));
-const y=Math.max(5,Math.min(cy-br.top-oy,b.scrollHeight-dragEl.offsetHeight-5));
-dragEl.style.left=x+'px';dragEl.style.top=y+'px';dragEl.style.transform='none';
-redraw();
-}
-function stopD(){
-if(dragEl)dragEl.classList.remove('dragging');
-setTimeout(()=>{dragging=false;},60);
-dragEl=null;tid=null;
-}
-// CABLES
-function addWire(p1,p2){
-const t1=p1.dataset.t,t2=p2.dataset.t;
-let c;
-if(['positive'].includes(t1)&&['positive'].includes(t2))c='#ff4757';
-else if(['negative'].includes(t1)&&['negative'].includes(t2))c='#94a3b8';
-else c=COLORS[colorIdx++%COLORS.length];
-wires.push({p1,p2,c});
-redraw();
-showToast(`🔌 Cable ${wires.length} conectado`,'success');
-}
-// SVG
-function getCenter(pt){
-const b=document.getElementById('board'),br=b.getBoundingClientRect();
-const r=pt.getBoundingClientRect();
-return{x:r.left-br.left+r.width/2,y:r.top-br.top+r.height/2};
-}
-function makePath(x1,y1,x2,y2){
-const cv=Math.abs(x2-x1)*.35+30;
-return`M${x1} ${y1} C${x1+cv} ${y1},${x2-cv} ${y2},${x2} ${y2}`;
-}
-function drawWire(w){
-const sv=document.getElementById('wire-svg');
-const{x:x1,y:y1}=getCenter(w.p1),{x:x2,y:y2}=getCenter(w.p2);
-const d=makePath(x1,y1,x2,y2);
-const sh=document.createElementNS("http://www.w3.org/2000/svg","path");
-sh.setAttribute('d',d);sh.setAttribute('stroke','rgba(0,0,0,.5)');
-sh.setAttribute('stroke-width','12');sh.setAttribute('fill','none');sh.setAttribute('stroke-linecap','round');
-sh.setAttribute('transform','translate(3,4)');sv.appendChild(sh);
-const p=document.createElementNS("http://www.w3.org/2000/svg","path");
-p.setAttribute('d',d);p.setAttribute('stroke',w.c);p.setAttribute('stroke-width','7');
-p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');
-p.style.filter=`drop-shadow(0 0 6px ${w.c})`;sv.appendChild(p);
-const gl=document.createElementNS("http://www.w3.org/2000/svg","path");
-gl.setAttribute('d',d);gl.setAttribute('stroke','rgba(255,255,255,.3)');
-gl.setAttribute('stroke-width','2.5');gl.setAttribute('fill','none');gl.setAttribute('stroke-linecap','round');sv.appendChild(gl);
-if(complete){
-drawEnergizedWire(sv,d,w.c);
-}
-}
-function drawEnergizedWire(sv,d,color){
-const en=document.createElementNS("http://www.w3.org/2000/svg","path");
-en.setAttribute('d',d);
-en.setAttribute('stroke','rgba(255,255,255,.8)');
-en.setAttribute('stroke-width','4');
-en.setAttribute('fill','none');
-en.setAttribute('stroke-linecap','round');
-en.setAttribute('stroke-dasharray','14 42');
-en.setAttribute('stroke-dashoffset','0');
-en.style.filter=`drop-shadow(0 0 6px ${color})`;
-const dur=(Math.random()*0.4+0.6).toFixed(2);
-en.style.animation=`dash ${dur}s linear infinite`;
-sv.appendChild(en);
-}
-(function(){
-const s=document.createElement('style');
-s.textContent='@keyframes dash{to{stroke-dashoffset:-56}}';
-document.head.appendChild(s);
-})();
-function redraw(){
-document.getElementById('wire-svg').innerHTML='';
-wires.forEach(drawWire);
-}
-// PARTÍCULAS DE ENERGÍA
-function spawnEnergyParticle(fromPt,toPt,color){
-const b=document.getElementById('board'),br=b.getBoundingClientRect();
-const r1=fromPt.getBoundingClientRect(),r2=toPt.getBoundingClientRect();
-const x1=r1.left-br.left+r1.width/2,y1=r1.top-br.top+r1.height/2;
-const x2=r2.left-br.left+r2.width/2,y2=r2.top-br.top+r2.height/2;
-const dot=document.createElement('div');
-dot.className='energy-particle';
-dot.style.cssText=`background:${color};color:${color};left:${x1}px;top:${y1}px;`;
-b.appendChild(dot);
-const start=performance.now();
-const dur=700+Math.random()*300;
-const cv=Math.abs(x2-x1)*.35+30;
-function step(now){
-const t=Math.min((now-start)/dur,1);
-const u=1-t;
-const cx1b=x1+cv,cy1b=y1,cx2b=x2-cv,cy2b=y2;
-const px=u*u*u*x1+3*u*u*t*cx1b+3*u*t*t*cx2b+t*t*t*x2;
-const py=u*u*u*y1+3*u*u*t*cy1b+3*u*t*t*cy2b+t*t*t*y2;
-dot.style.left=(px-6)+'px';dot.style.top=(py-6)+'px';
-if(t<1)requestAnimationFrame(step);
-else dot.remove();
-}
-requestAnimationFrame(step);
-}
-function runEnergyAnimation(){
-for(let rep=0;rep<4;rep++){
-wires.forEach((w,i)=>{
-setTimeout(()=>{
-spawnEnergyParticle(w.p1,w.p2,w.c);
-spawnEnergyParticle(w.p2,w.p1,w.c);
-},rep*400+i*100);
+handlePointClick(e);
+});
 });
 }
-}
-// UI
-function updateUI(){
-document.getElementById('scWires').textContent=wires.length+'/'+MAX;
-document.getElementById('scLed').textContent=document.getElementById('cl').classList.contains('active')?'✅ ON':'❌ OFF';
-}
-function updateProg(){document.getElementById('prog').style.width=(wires.length/MAX*100)+'%';document.getElementById('scProg').textContent=Math.round((wires.length/MAX)*100)+'%';}
-// MISIONES
-function buildConn(){
-const c={};
-wires.forEach(w=>{
-const k1=w.p1.dataset.c+'-'+w.p1.dataset.t;
-const k2=w.p2.dataset.c+'-'+w.p2.dataset.t;
-if(!c[k1])c[k1]=[];if(!c[k2])c[k2]=[];
-c[k1].push(k2);c[k2].push(k1);
-});
-return c;
-}
-function chk(c,a,b){return c[a]?c[a].includes(b):false;}
-function checkMissions(){
-const c=buildConn();
-const m=[
-chk(c,'battery-positive','led-positive'),
-chk(c,'led-negative','battery-negative')
-];
-['m1','m2'].forEach((id,i)=>document.getElementById(id).classList.toggle('done',m[i]));
-}
-// VERIFICAR
-function verify(){
-if(wires.length<MAX){showToast(`❌ Faltan ${MAX-wires.length} cable(s)`,'error');return;}
-const c=buildConn();
-const m1=chk(c,'battery-positive','led-positive');
-const m2=chk(c,'led-negative','battery-negative');
-if(m1&&m2){
-complete=true;
-document.getElementById('cl').classList.add('active');
-document.getElementById('celeb').classList.add('active');
-confetti();
-showToast('✅ ¡CORRECTO! Circuito completado - LED ENCENDIDO','success');
-runEnergyAnimation();
+function handlePointClick(e) {
+e.preventDefault(); // Prevent default behavior
+const point = e.target;
+if (!selectedPoint) {
+selectedPoint = point;
+point.classList.add('selected');
+document.getElementById('wire-mode').classList.add('active');
+showStatus('Punto seleccionado! Ahora haz clic en otro punto', 'info');
+playSound(600, 0.1);
 } else {
-complete=false;
-document.getElementById('cl').classList.remove('active');
-let msg='❌ Revisa: ';
-if(!m1)msg+='Batería(+)→LED(+). ';
-if(!m2)msg+='LED(−)→Batería(−).';
-showToast(msg,'error');
+if (selectedPoint === point) {
+selectedPoint.classList.remove('selected');
+selectedPoint = null;
+document.getElementById('wire-mode').classList.remove('active');
+showStatus('Conexion cancelada', 'error');
+return;
 }
-updateUI();
-}
-// RESET
-function resetAll(){
-wires=[];colorIdx=0;
-document.getElementById('wire-svg').innerHTML='';
-document.querySelectorAll('.cp').forEach(p=>p.classList.remove('connected','selected'));
-selPt=null;complete=false;
-document.getElementById('cl').classList.remove('active');
-['m1','m2'].forEach(id=>document.getElementById(id).classList.remove('done'));
-updateUI();updateProg();
-showToast('🔄 Reiniciado — ¡Inténtalo de nuevo!','info');
-}
-// CONFETTI
-function confetti(){
-const cols=['#f093fb','#ffd700','#10b981','#06b6d4','#a855f7','#f472b6','#22d3ee','#fb923c'];
-for(let i=0;i<85;i++){
-const c=document.createElement('div');c.className='confetti';
-c.style.cssText=`left:${Math.random()*100}%;background:${cols[i%8]};animation-delay:${Math.random()*2.8}s;animation-duration:${Math.random()*2.2+3.5}s;`;
-document.body.appendChild(c);setTimeout(()=>c.remove(),6500);
+createWire(selectedPoint, point);
+selectedPoint.classList.remove('selected');
+point.classList.add('connected');
+selectedPoint.classList.add('connected');
+selectedPoint = null;
+document.getElementById('wire-mode').classList.remove('active');
+playConnectSound();
+updateProgress();
+checkMissions();
 }
 }
-// TOAST
-function closeC(){document.getElementById('celeb').classList.remove('active');}
-let toastT;
-function showToast(msg,type){
-const el=document.getElementById('toast');
-el.textContent=msg;el.className='toast '+type;
-clearTimeout(toastT);
-requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
-toastT=setTimeout(()=>el.classList.remove('show'),4500);
+function createWire(point1, point2) {
+const container = document.getElementById('protoboard-container');
+const containerRect = container.getBoundingClientRect();
+const rect1 = point1.getBoundingClientRect();
+const rect2 = point2.getBoundingClientRect();
+const x1 = rect1.left - containerRect.left + rect1.width / 2;
+const y1 = rect1.top - containerRect.top + rect1.height / 2;
+const x2 = rect2.left - containerRect.left + rect2.width / 2;
+const y2 = rect2.top - containerRect.top + rect2.height / 2;
+const wire = {
+point1: point1,
+point2: point2,
+x1: x1,
+y1: y1,
+x2: x2,
+y2: y2,
+color: wireColors[currentColorIndex % wireColors.length]
+};
+wires.push(wire);
+currentColorIndex++;
+drawWire(wire);
+const component1 = point1.dataset.component;
+const terminal1 = point1.dataset.terminal;
+const component2 = point2.dataset.component;
+const terminal2 = point2.dataset.terminal;
+showStatus(`Cable conectado: ${component1} (${terminal1}) - ${component2} (${terminal2})`, 'success');
+}
+function drawWire(wire) {
+const canvas = document.getElementById('wire-canvas');
+const xmlns = "http://www.w3.org/2000/svg";
+const path = document.createElementNS(xmlns, "path");
+const dx = wire.x2 - wire.x1;
+const dy = wire.y2 - wire.y1;
+const curve = Math.abs(dx) * 0.5;
+const d = `M ${wire.x1} ${wire.y1} C ${wire.x1 + curve} ${wire.y1}, ${wire.x2 - curve} ${wire.y2}, ${wire.x2} ${wire.y2}`;
+path.setAttribute('d', d);
+path.setAttribute('stroke', wire.color);
+path.setAttribute('stroke-width', '6');
+path.setAttribute('fill', 'none');
+path.setAttribute('stroke-linecap', 'round');
+path.style.filter = `drop-shadow(0 0 8px ${wire.color})`;
+canvas.appendChild(path);
+}
+function redrawWires() {
+const canvas = document.getElementById('wire-canvas');
+canvas.innerHTML = '';
+const container = document.getElementById('protoboard-container');
+const containerRect = container.getBoundingClientRect();
+wires.forEach(wire => {
+const rect1 = wire.point1.getBoundingClientRect();
+const rect2 = wire.point2.getBoundingClientRect();
+wire.x1 = rect1.left - containerRect.left + rect1.width / 2;
+wire.y1 = rect1.top - containerRect.top + rect1.height / 2;
+wire.x2 = rect2.left - containerRect.left + rect2.width / 2;
+wire.y2 = rect2.top - containerRect.top + rect2.height / 2;
+drawWire(wire);
+});
+}
+function clearWires() {
+if (wires.length === 0) {
+showStatus('No hay cables para eliminar', 'error');
+playErrorSound();
+return;
+}
+wires = [];
+document.getElementById('wire-canvas').innerHTML = '';
+const points = document.querySelectorAll('.connection-point');
+points.forEach(point => {
+point.classList.remove('connected', 'selected');
+});
+selectedPoint = null;
+document.getElementById('wire-mode').classList.remove('active');
+document.querySelector('.led').classList.remove('active');
+document.getElementById('mission1').classList.remove('completed');
+document.getElementById('mission2').classList.remove('completed');
+document.getElementById('mission3').classList.remove('completed');
+updateProgress();
+showStatus('Cables eliminados. Intenta de nuevo', 'info');
+playSound(400, 0.2);
+}
+function updateProgress() {
+document.getElementById('wire-count').textContent = wires.length;
+const progress = Math.min(100, Math.round((wires.length / 3) * 100));
+document.getElementById('progress').textContent = progress + '%';
+}
+function checkMissions() {
+const connections = {};
+wires.forEach(wire => {
+const key1 = `${wire.point1.dataset.component}-${wire.point1.dataset.terminal}`;
+const key2 = `${wire.point2.dataset.component}-${wire.point2.dataset.terminal}`;
+if (!connections[key1]) connections[key1] = [];
+if (!connections[key2]) connections[key2] = [];
+connections[key1].push(key2);
+connections[key2].push(key1);
+});
+const mission1 = checkPath(connections, 'battery-positive', 'resistor-left') ||
+checkPath(connections, 'battery-positive', 'resistor-right');
+const mission2 = checkPath(connections, 'resistor-left', 'led-positive') ||
+checkPath(connections, 'resistor-right', 'led-positive');
+const mission3 = checkPath(connections, 'led-negative', 'battery-negative');
+if (mission1) {
+document.getElementById('mission1').classList.add('completed');
+}
+if (mission2) {
+document.getElementById('mission2').classList.add('completed');
+}
+if (mission3) {
+document.getElementById('mission3').classList.add('completed');
+}
+}
+function checkCircuit() {
+if (wires.length < 3) {
+showStatus('Circuito incompleto. Necesitas 3 cables para completar el circuito', 'error');
+playErrorSound();
+return;
+}
+const connections = {};
+wires.forEach(wire => {
+const key1 = `${wire.point1.dataset.component}-${wire.point1.dataset.terminal}`;
+const key2 = `${wire.point2.dataset.component}-${wire.point2.dataset.terminal}`;
+if (!connections[key1]) connections[key1] = [];
+if (!connections[key2]) connections[key2] = [];
+connections[key1].push(key2);
+connections[key2].push(key1);
+});
+const hasPath1 = checkPath(connections, 'battery-positive', 'resistor-left') ||
+checkPath(connections, 'battery-positive', 'resistor-right');
+const hasPath2 = checkPath(connections, 'resistor-left', 'led-positive') ||
+checkPath(connections, 'resistor-right', 'led-positive');
+const hasPath3 = checkPath(connections, 'led-negative', 'battery-negative');
+if (hasPath1 && hasPath2 && hasPath3) {
+document.querySelector('.led').classList.add('active');
+document.getElementById('celebration').classList.add('active');
+playSuccessSound();
+} else {
+document.querySelector('.led').classList.remove('active');
+let message = 'Circuito incorrecto! Revisa:';
+if (!hasPath1) message = message + ' Falta: Bateria (+) con Resistencia.';
+if (!hasPath2) message = message + ' Falta: Resistencia con LED (+).';
+if (!hasPath3) message = message + ' Falta: LED (-) con Bateria (-).';
+showStatus(message, 'error');
+playErrorSound();
+}
+}
+function checkPath(connections, start, end) {
+if (!connections[start]) return false;
+return connections[start].includes(end);
+}
+function getHint() {
+hintsGiven++;
+const hints = [
+'Empieza conectando el terminal positivo (+) de la bateria con cualquier lado de la resistencia',
+'Ahora conecta el otro lado de la resistencia con el terminal positivo (+) del LED (arriba)',
+'Finalmente, conecta el terminal negativo (-) del LED (abajo) con el negativo de la bateria',
+'Recuerda: el flujo de corriente va de (+) a (-) pasando por la resistencia y el LED'
+];
+const hintIndex = Math.min(hintsGiven - 1, hints.length - 1);
+showStatus('PISTA: ' + hints[hintIndex], 'info');
+playSound(700, 0.15);
+}
+function closeCelebration() {
+document.getElementById('celebration').classList.remove('active');
+}
+function showStatus(message, type) {
+const statusEl = document.getElementById('status-toast');
+statusEl.textContent = message;
+statusEl.className = `status-toast ${type}`;
+setTimeout(() => statusEl.classList.add('show'), 100);
+setTimeout(() => {
+statusEl.classList.remove('show');
+}, 4000);
 }
 </script>
 </body>
