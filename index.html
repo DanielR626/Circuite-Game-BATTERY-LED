@@ -411,4 +411,439 @@ font-size:1.25em;cursor:pointer;font-weight:900;
 display:flex;align-items:center;justify-content:center;transition:all .25s;
 }
 .celeb-x:hover{background:rgba(239,68,68,.45);transform:rotate(90deg);}
-.celeb-emoji{font-size:clamp(3.2em,8vw,5.5em
+.celeb-emoji{font-size:clamp(3.2em,8vw,5.5em);display:block;margin-bottom:14px;animation:bounce .85s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+.celeb-title{
+font-size:clamp(1.35em,4vw,2.5em);font-weight:900;
+background:linear-gradient(90deg,#f093fb,#ffd700,#10b981);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+margin:14px 0;line-height:1.35;
+}
+.celeb-txt{font-size:clamp(.88em,1.8vw,1.08em);opacity:.96;line-height:1.85;font-weight:700;margin-bottom:20px;}
+.confetti{position:fixed;width:13px;height:13px;animation:fall 4.8s linear forwards;border-radius:4px;z-index:10000;pointer-events:none;}
+@keyframes fall{0%{transform:translateY(-10vh) rotate(0) scale(1);opacity:1;}100%{transform:translateY(110vh) rotate(720deg) scale(.55);opacity:0;}}
+</style>
+</head>
+<body>
+<!-- Partículas de fondo -->
+<div class="particles-container">
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div><div class="particle"></div><div class="particle"></div>
+<div class="particle"></div>
+</div>
+<!-- Chispas -->
+<div class="spark" style="top:20%;left:15%;"></div>
+<div class="spark" style="top:60%;left:85%;animation-delay:1s;"></div>
+<div class="spark" style="top:40%;left:50%;animation-delay:2s;"></div>
+<div class="wrap">
+<!-- HEADER -->
+<div class="hdr">
+<div class="hdr-badge">⚡ NIVEL 1 - RETO 1 ⚡</div>
+<div class="hdr-title">ELECTROCITY - LA PRIMERA LUZ</div>
+<div class="hdr-sub">🎯 Enciende tu Primer LED y Comienza tu Aventura</div>
+<div class="hdr-desc">
+Bienvenido a <span class="info-highlight">ElectroCity</span>. En este primer reto aprenderás los fundamentos de la electricidad.
+Tu misión: Encender tu primera luz conectando un LED a una batería.
+¡Es hora de iluminar la ciudad!
+</div>
+<div class="progress-container">
+<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+</div>
+</div>
+<!-- INFO CARD -->
+<div class="info-card">
+<div class="info-title">⚡ Tu Misión en ElectroCity</div>
+<div class="info-text">
+<strong>Desafío:</strong> Armar un circuito básico con batería y LED.<br>
+<strong>Componentes:</strong> Batería 9V, LED Rojo<br>
+<strong>Objetivo:</strong> Aprender a construir un circuito eléctrico básico conectando un LED a una batería y comprender cómo fluye la electricidad.
+</div>
+</div>
+<!-- GUÍA -->
+<div class="guide">
+<div class="section-title">⚡ Guía de Componentes</div>
+<div class="comp-grid">
+<div class="comp-card">
+<span class="comp-icon">🔋</span>
+<div class="comp-name">Batería</div>
+<div class="comp-desc">Fuente de energía</div>
+<span class="comp-tag" style="color:#10b981;border-color:#10b981;">9V</span>
+</div>
+<div class="comp-card">
+<span class="comp-icon">💡</span>
+<div class="comp-name">LED</div>
+<div class="comp-desc">Emite luz</div>
+<span class="comp-tag" style="color:#ef4444;border-color:#ef4444;">Rojo</span>
+</div>
+</div>
+</div>
+<!-- SCORES -->
+<div class="scores">
+<div class="sc"><div class="sc-label">🔌 Cables</div><div class="sc-val" id="scWires">0/2</div></div>
+<div class="sc"><div class="sc-label">🎯 Progreso</div><div class="sc-val" id="scProg">0%</div></div>
+<div class="sc"><div class="sc-label">💡 LED</div><div class="sc-val" id="scLed">OFF</div></div>
+</div>
+<!-- MAIN -->
+<div class="main-grid">
+<div class="panel">
+<div class="section-title">🎯 Tu Misión</div>
+<div class="mission" id="m1"><span class="mission-num">1</span><span class="mission-txt">Conecta el <strong>+ rojo</strong> de la batería con el <strong>+ del LED</strong> (pata larga)</span></div>
+<div class="mission" id="m2"><span class="mission-num">2</span><span class="mission-txt">Conecta el <strong>− del LED</strong> (pata corta) con el <strong>− negro</strong> de la batería</span></div>
+<div class="instrbox">
+🎯 <strong>2 cables</strong> completan el circuito.<br>
+💡 Pata larga (+) siempre al positivo.<br>
+🔄 Toca un componente y usa el botón ↻ para rotarlo.<br>
+⚡ ¡Observa las partículas de energía fluir!
+</div>
+<button class="btn btn-ok" onclick="verify()">✓ VERIFICAR CIRCUITO</button>
+<button class="btn btn-rst" onclick="resetAll()">🔄 REINICIAR</button>
+</div>
+<div class="panel">
+<div class="section-title">⚡ Tablero de Circuitos</div>
+<p style="text-align:center;font-size:.82em;opacity:.75;margin-bottom:12px;">📱 Toca un punto dorado → luego toca otro<br>🔄 Toca un componente y gíralo con el botón</p>
+<div class="board-wrap">
+<div id="board">
+<div class="board-corner tl"></div>
+<div class="board-corner br"></div>
+<div class="board-hud"><div class="hud-dot"></div><span class="hud-txt">CIRCUITO ACTIVO</span><div class="hud-dot"></div></div>
+<svg id="wire-svg"></svg>
+<!-- BATERÍA -->
+<div class="comp battery" id="cb" data-rot="0">
+<button class="rotate-btn" type="button" onclick="rotateComp(event,'cb')" title="Rotar">↻</button>
+<div class="comp-inner">
+<div class="cp" data-c="battery" data-t="positive" data-tip="+ Batería" style="top:-24px;left:50%;transform:translateX(-50%);"></div>
+<div class="comp-base">
+<div class="batt-body">
+<div class="batt-lbl">9V</div>
+<div class="batt-sign batt-plus">+</div>
+<div class="batt-sign batt-minus">−</div>
+</div>
+</div>
+<div class="cp" data-c="battery" data-t="negative" data-tip="− Batería" style="bottom:-24px;left:50%;transform:translateX(-50%);"></div>
+</div>
+</div>
+<!-- LED -->
+<div class="comp led" id="cl" data-rot="0">
+<button class="rotate-btn" type="button" onclick="rotateComp(event,'cl')" title="Rotar">↻</button>
+<div class="comp-inner">
+<div class="led-sign led-sp">+</div>
+<div class="cp" data-c="led" data-t="positive" data-tip="+ LED (pata larga)" style="top:-24px;left:14px;"></div>
+<div class="comp-base" style="border-radius:50% 50% 14px 14px;padding:7px;">
+<div class="led-body"></div>
+</div>
+<div class="cp" data-c="led" data-t="negative" data-tip="− LED (pata corta)" style="bottom:-23px;right:14px;"></div>
+<div class="led-sign led-sn">−</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<!-- CELEBRACIÓN -->
+<div class="overlay" id="celeb">
+<div class="celeb">
+<button class="celeb-x" onclick="closeC()">✕</button>
+<span class="celeb-emoji">🎉💡✨</span>
+<div class="celeb-title">¡MISIÓN CUMPLIDA!</div>
+<div class="celeb-txt">
+🌟 ¡Felicitaciones, nuevo ingeniero de ElectroCity! 🌟<br><br>
+Has completado tu primer circuito eléctrico.<br>
+<strong>¡El LED ahora está ENCENDIDO!</strong> 💡<br><br>
+<strong>¡Has completado el Reto 1!</strong><br>
+¡Estás listo para el siguiente desafío!
+</div>
+<button class="btn btn-ok" onclick="closeC()">🚀 CONTINUAR</button>
+</div>
+</div>
+<script>
+// VARIABLES
+let wires=[],selPt=null,colorIdx=0,complete=false;
+let dragEl=null,ox=0,oy=0,dragging=false,tid=null;
+let selectedComp=null,sx=0,sy=0,moved=false;
+const COLORS=['#ff4757','#06b6d4','#4facfe','#ffd700'];
+const MAX=2;
+// INIT
+document.addEventListener('DOMContentLoaded',()=>{
+setupPoints();setupDrag();resizeSVG();
+document.getElementById('board').addEventListener('click',e=>{
+if(e.target.id==='board'&&selectedComp){selectedComp.classList.remove('comp-selected');selectedComp=null;}
+});
+window.addEventListener('resize',()=>{resizeSVG();redraw();});
+});
+function resizeSVG(){
+const b=document.getElementById('board'),s=document.getElementById('wire-svg');
+s.setAttribute('width',b.scrollWidth||b.offsetWidth);
+s.setAttribute('height',b.scrollHeight||b.offsetHeight);
+}
+// PUNTOS
+function setupPoints(){
+document.querySelectorAll('.cp').forEach(p=>{
+p.addEventListener('click',onPt);
+p.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();onPt(e);},{passive:false});
+});
+}
+function onPt(e){
+e.preventDefault();e.stopPropagation();
+if(dragging)return;
+const p=e.currentTarget||e.target;
+if(!selPt){
+if(wires.length>=MAX){showToast('⚠️ Ya usaste los 2 cables','info');return;}
+selPt=p;p.classList.add('selected');
+showToast('✓ Seleccionado — elige el punto destino','info');
+} else {
+if(selPt===p){selPt.classList.remove('selected');selPt=null;showToast('❌ Cancelado','info');return;}
+if(selPt.dataset.c===p.dataset.c){selPt.classList.remove('selected');selPt=null;showToast('❌ Mismo componente — elige otro','error');return;}
+addWire(selPt,p);
+selPt.classList.remove('selected');
+p.classList.add('connected');selPt.classList.add('connected');
+selPt=null;
+updateUI();updateProg();checkMissions();
+}
+}
+// SELECCIÓN Y ROTACIÓN
+function selectComp(el){
+if(selectedComp&&selectedComp!==el){selectedComp.classList.remove('comp-selected');}
+if(selectedComp===el){el.classList.remove('comp-selected');selectedComp=null;}
+else{el.classList.add('comp-selected');selectedComp=el;showToast('🔧 Componente seleccionado — toca ↻ para rotar','info');}
+}
+function rotateComp(e,id){
+e.preventDefault();e.stopPropagation();
+const el=document.getElementById(id);
+let rot=(parseInt(el.dataset.rot||'0',10)+90)%360;
+el.dataset.rot=rot;
+const inner=el.querySelector('.comp-inner');
+if(inner)inner.style.transform='rotate('+rot+'deg)';
+redraw();
+showToast('🔄 Rotado a '+rot+'°','success');
+}
+// DRAG
+function setupDrag(){
+document.querySelectorAll('.comp').forEach(c=>{
+c.addEventListener('mousedown',startD);
+c.addEventListener('touchstart',startD,{passive:false});
+});
+document.addEventListener('mousemove',doD);
+document.addEventListener('touchmove',doD,{passive:false});
+document.addEventListener('mouseup',stopD);
+document.addEventListener('touchend',stopD);
+}
+function startD(e){
+const t=e.target;
+if(t.classList.contains('cp')||t.classList.contains('rotate-btn'))return;
+e.preventDefault();
+dragEl=e.currentTarget;dragging=false;moved=false;
+const r=dragEl.getBoundingClientRect();
+if(e.type==='touchstart'){const tc=e.touches[0];tid=tc.identifier;ox=tc.clientX-r.left;oy=tc.clientY-r.top;sx=tc.clientX;sy=tc.clientY;}
+else{ox=e.clientX-r.left;oy=e.clientY-r.top;sx=e.clientX;sy=e.clientY;}
+}
+function doD(e){
+if(!dragEl)return;e.preventDefault();
+let cx,cy;
+if(e.type==='touchmove'){const t=Array.from(e.touches).find(t=>t.identifier===tid);if(!t)return;cx=t.clientX;cy=t.clientY;}
+else{cx=e.clientX;cy=e.clientY;}
+if(Math.abs(cx-sx)>6||Math.abs(cy-sy)>6)moved=true;
+if(!moved)return;
+dragging=true;dragEl.classList.add('dragging');
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const x=Math.max(5,Math.min(cx-br.left-ox,b.scrollWidth-dragEl.offsetWidth-5));
+const y=Math.max(5,Math.min(cy-br.top-oy,b.scrollHeight-dragEl.offsetHeight-5));
+dragEl.style.left=x+'px';dragEl.style.top=y+'px';dragEl.style.transform='none';
+redraw();
+}
+function stopD(){
+if(dragEl){
+dragEl.classList.remove('dragging');
+if(!moved){selectComp(dragEl);}
+}
+setTimeout(()=>{dragging=false;},60);
+dragEl=null;tid=null;
+}
+// CABLES
+function addWire(p1,p2){
+const t1=p1.dataset.t,t2=p2.dataset.t;
+let c;
+if(['positive'].includes(t1)&&['positive'].includes(t2))c='#ff4757';
+else if(['negative'].includes(t1)&&['negative'].includes(t2))c='#94a3b8';
+else c=COLORS[colorIdx++%COLORS.length];
+wires.push({p1,p2,c});
+redraw();
+showToast(`🔌 Cable ${wires.length} conectado`,'success');
+}
+// SVG
+function getCenter(pt){
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const r=pt.getBoundingClientRect();
+return{x:r.left-br.left+r.width/2,y:r.top-br.top+r.height/2};
+}
+function makePath(x1,y1,x2,y2){
+const cv=Math.abs(x2-x1)*.35+30;
+return`M${x1} ${y1} C${x1+cv} ${y1},${x2-cv} ${y2},${x2} ${y2}`;
+}
+function drawWire(w){
+const sv=document.getElementById('wire-svg');
+const{x:x1,y:y1}=getCenter(w.p1),{x:x2,y:y2}=getCenter(w.p2);
+const d=makePath(x1,y1,x2,y2);
+const sh=document.createElementNS("http://www.w3.org/2000/svg","path");
+sh.setAttribute('d',d);sh.setAttribute('stroke','rgba(0,0,0,.5)');
+sh.setAttribute('stroke-width','12');sh.setAttribute('fill','none');sh.setAttribute('stroke-linecap','round');
+sh.setAttribute('transform','translate(3,4)');sv.appendChild(sh);
+const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+p.setAttribute('d',d);p.setAttribute('stroke',w.c);p.setAttribute('stroke-width','7');
+p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');
+p.style.filter=`drop-shadow(0 0 6px ${w.c})`;sv.appendChild(p);
+const gl=document.createElementNS("http://www.w3.org/2000/svg","path");
+gl.setAttribute('d',d);gl.setAttribute('stroke','rgba(255,255,255,.3)');
+gl.setAttribute('stroke-width','2.5');gl.setAttribute('fill','none');gl.setAttribute('stroke-linecap','round');sv.appendChild(gl);
+if(complete){
+drawEnergizedWire(sv,d,w.c);
+}
+}
+function drawEnergizedWire(sv,d,color){
+const en=document.createElementNS("http://www.w3.org/2000/svg","path");
+en.setAttribute('d',d);
+en.setAttribute('stroke','rgba(255,255,255,.8)');
+en.setAttribute('stroke-width','4');
+en.setAttribute('fill','none');
+en.setAttribute('stroke-linecap','round');
+en.setAttribute('stroke-dasharray','14 42');
+en.setAttribute('stroke-dashoffset','0');
+en.style.filter=`drop-shadow(0 0 6px ${color})`;
+const dur=(Math.random()*0.4+0.6).toFixed(2);
+en.style.animation=`dash ${dur}s linear infinite`;
+sv.appendChild(en);
+}
+(function(){
+const s=document.createElement('style');
+s.textContent='@keyframes dash{to{stroke-dashoffset:-56}}';
+document.head.appendChild(s);
+})();
+function redraw(){
+document.getElementById('wire-svg').innerHTML='';
+wires.forEach(drawWire);
+}
+// PARTÍCULAS DE ENERGÍA
+function spawnEnergyParticle(fromPt,toPt,color){
+const b=document.getElementById('board'),br=b.getBoundingClientRect();
+const r1=fromPt.getBoundingClientRect(),r2=toPt.getBoundingClientRect();
+const x1=r1.left-br.left+r1.width/2,y1=r1.top-br.top+r1.height/2;
+const x2=r2.left-br.left+r2.width/2,y2=r2.top-br.top+r2.height/2;
+const dot=document.createElement('div');
+dot.className='energy-particle';
+dot.style.cssText=`background:${color};color:${color};left:${x1}px;top:${y1}px;`;
+b.appendChild(dot);
+const start=performance.now();
+const dur=700+Math.random()*300;
+const cv=Math.abs(x2-x1)*.35+30;
+function step(now){
+const t=Math.min((now-start)/dur,1);
+const u=1-t;
+const cx1b=x1+cv,cy1b=y1,cx2b=x2-cv,cy2b=y2;
+const px=u*u*u*x1+3*u*u*t*cx1b+3*u*t*t*cx2b+t*t*t*x2;
+const py=u*u*u*y1+3*u*u*t*cy1b+3*u*t*t*cy2b+t*t*t*y2;
+dot.style.left=(px-6)+'px';dot.style.top=(py-6)+'px';
+if(t<1)requestAnimationFrame(step);
+else dot.remove();
+}
+requestAnimationFrame(step);
+}
+function runEnergyAnimation(){
+for(let rep=0;rep<4;rep++){
+wires.forEach((w,i)=>{
+setTimeout(()=>{
+spawnEnergyParticle(w.p1,w.p2,w.c);
+spawnEnergyParticle(w.p2,w.p1,w.c);
+},rep*400+i*100);
+});
+}
+}
+// UI
+function updateUI(){
+document.getElementById('scWires').textContent=wires.length+'/'+MAX;
+document.getElementById('scLed').textContent=document.getElementById('cl').classList.contains('active')?'✅ ON':'❌ OFF';
+}
+function updateProg(){document.getElementById('prog').style.width=(wires.length/MAX*100)+'%';document.getElementById('scProg').textContent=Math.round((wires.length/MAX)*100)+'%';}
+// MISIONES
+function buildConn(){
+const c={};
+wires.forEach(w=>{
+const k1=w.p1.dataset.c+'-'+w.p1.dataset.t;
+const k2=w.p2.dataset.c+'-'+w.p2.dataset.t;
+if(!c[k1])c[k1]=[];if(!c[k2])c[k2]=[];
+c[k1].push(k2);c[k2].push(k1);
+});
+return c;
+}
+function chk(c,a,b){return c[a]?c[a].includes(b):false;}
+function checkMissions(){
+const c=buildConn();
+const m=[
+chk(c,'battery-positive','led-positive'),
+chk(c,'led-negative','battery-negative')
+];
+['m1','m2'].forEach((id,i)=>document.getElementById(id).classList.toggle('done',m[i]));
+}
+// VERIFICAR
+function verify(){
+if(wires.length<MAX){showToast(`❌ Faltan ${MAX-wires.length} cable(s)`,'error');return;}
+const c=buildConn();
+const m1=chk(c,'battery-positive','led-positive');
+const m2=chk(c,'led-negative','battery-negative');
+if(m1&&m2){
+complete=true;
+document.getElementById('cl').classList.add('active');
+document.getElementById('celeb').classList.add('active');
+confetti();
+showToast('✅ ¡CORRECTO! Circuito completado - LED ENCENDIDO','success');
+runEnergyAnimation();
+} else {
+complete=false;
+document.getElementById('cl').classList.remove('active');
+let msg='❌ Revisa: ';
+if(!m1)msg+='Batería(+)→LED(+). ';
+if(!m2)msg+='LED(−)→Batería(−).';
+showToast(msg,'error');
+}
+updateUI();
+}
+// RESET
+function resetAll(){
+wires=[];colorIdx=0;
+document.getElementById('wire-svg').innerHTML='';
+document.querySelectorAll('.cp').forEach(p=>p.classList.remove('connected','selected'));
+document.querySelectorAll('.comp').forEach(c=>{
+c.classList.remove('comp-selected');
+c.dataset.rot='0';
+const inner=c.querySelector('.comp-inner');
+if(inner)inner.style.transform='rotate(0deg)';
+});
+selPt=null;complete=false;selectedComp=null;
+document.getElementById('cl').classList.remove('active');
+['m1','m2'].forEach(id=>document.getElementById(id).classList.remove('done'));
+updateUI();updateProg();
+showToast('🔄 Reiniciado — ¡Inténtalo de nuevo!','info');
+}
+// CONFETTI
+function confetti(){
+const cols=['#f093fb','#ffd700','#10b981','#06b6d4','#a855f7','#f472b6','#22d3ee','#fb923c'];
+for(let i=0;i<85;i++){
+const c=document.createElement('div');c.className='confetti';
+c.style.cssText=`left:${Math.random()*100}%;background:${cols[i%8]};animation-delay:${Math.random()*2.8}s;animation-duration:${Math.random()*2.2+3.5}s;`;
+document.body.appendChild(c);setTimeout(()=>c.remove(),6500);
+}
+}
+// TOAST
+function closeC(){document.getElementById('celeb').classList.remove('active');}
+let toastT;
+function showToast(msg,type){
+const el=document.getElementById('toast');
+el.textContent=msg;el.className='toast '+type;
+clearTimeout(toastT);
+requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+toastT=setTimeout(()=>el.classList.remove('show'),4500);
+}
+</script>
+</body>
+</html>
