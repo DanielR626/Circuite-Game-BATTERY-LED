@@ -14,7 +14,7 @@
 }
 body{
 font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+background:linear-gradient(135deg,#4d5fb0 0%,#59387a 100%);
 min-height:100vh;padding:12px;color:#fff;overflow-x:hidden;
 position:relative;
 }
@@ -238,6 +238,9 @@ repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px
 repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 32px);
 pointer-events:none;border-radius:18px;
 }
+.board-corner{position:absolute;width:26px;height:26px;border:3px solid rgba(255,255,255,.35);z-index:6;pointer-events:none;}
+.board-corner.tl{top:10px;left:10px;border-right:none;border-bottom:none;border-radius:6px 0 0 0;}
+.board-corner.br{bottom:10px;right:10px;border-left:none;border-top:none;border-radius:0 0 6px 0;}
 .board-hud{
 position:absolute;top:14px;left:50%;transform:translateX(-50%);
 background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);
@@ -253,11 +256,29 @@ box-shadow:0 0 25px rgba(255,255,255,.25);
 .comp{position:absolute;z-index:10;cursor:grab;}
 .comp:active{cursor:grabbing;}
 .comp.dragging{opacity:.9;z-index:100;filter:brightness(1.2);}
+.comp-inner{position:relative;transition:transform .35s ease;transform-origin:center center;}
 .comp-base{
 background:linear-gradient(135deg,rgba(30,60,114,.95),rgba(42,82,152,.95));
 border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:10px;
 box-shadow:0 8px 22px rgba(0,0,0,.5),0 0 18px rgba(102,126,234,.2);
 }
+.comp.comp-selected .comp-base{box-shadow:0 0 0 3px #ffd700,0 8px 22px rgba(0,0,0,.5),0 0 30px rgba(255,215,0,.6);}
+/* Botón de rotar */
+.rotate-btn{
+position:absolute;top:-14px;right:-14px;
+width:34px;height:34px;border-radius:50%;
+background:linear-gradient(135deg,#4facfe,#0891b2);
+border:3px solid rgba(255,255,255,.85);
+color:#fff;font-size:1.15em;font-weight:900;line-height:1;
+display:none;align-items:center;justify-content:center;
+cursor:pointer;z-index:26;padding:0;
+box-shadow:0 0 15px rgba(79,172,254,.6),0 4px 10px rgba(0,0,0,.4);
+transition:all .25s;touch-action:manipulation;
+}
+.comp.comp-selected .rotate-btn{display:flex;animation:rotBtnPulse 1.6s ease-in-out infinite;}
+@keyframes rotBtnPulse{0%,100%{box-shadow:0 0 15px rgba(79,172,254,.6),0 4px 10px rgba(0,0,0,.4);}50%{box-shadow:0 0 26px rgba(79,172,254,.9),0 4px 14px rgba(0,0,0,.5);}}
+.rotate-btn:hover{transform:scale(1.15) rotate(90deg);}
+.rotate-btn:active{transform:scale(.95) rotate(90deg);}
 /* Batería */
 .battery{width:88px;text-align:center;}
 .batt-body{
@@ -312,9 +333,21 @@ box-shadow:0 0 22px rgba(16,185,129,.8),0 0 40px rgba(16,185,129,.45);
 @keyframes cpc{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
 .cp.selected{background:radial-gradient(circle,#06b6d4,#0891b2);border-color:#06b6d4;animation:cps .7s ease-in-out infinite;box-shadow:0 0 28px #06b6d4,0 0 55px rgba(6,182,212,.35);}
 @keyframes cps{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+.cp[data-tip]::after{
+content:attr(data-tip);position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+background:rgba(15,23,42,.95);color:#ffd700;
+padding:7px 14px;border-radius:10px;font-size:12px;white-space:nowrap;
+opacity:0;pointer-events:none;transition:opacity .25s;
+border:2px solid rgba(255,215,0,.45);font-weight:800;box-shadow:0 0 18px rgba(255,215,0,.3);
+z-index:40;
+}
+.cp:hover::after{opacity:1;}
 /* Posiciones */
-.battery{left:120px;top:50%;transform:translateY(-50%);}
-.led{left:380px;top:50%;transform:translateY(-50%);}
+@media(min-width:900px){
+#board{min-height:520px;}
+}
+.battery{left:55px;top:24%;transform:translateY(-50%);}
+.led{left:430px;top:72%;transform:translateY(-50%);}
 @media(max-width:700px){
 .battery{left:5%;top:20%;transform:none;}
 .led{left:55%;top:20%;transform:none;}
@@ -455,6 +488,7 @@ Tu misión: Encender tu primera luz conectando un LED a una batería.
 <div class="instrbox">
 🎯 <strong>2 cables</strong> completan el circuito.<br>
 💡 Pata larga (+) siempre al positivo.<br>
+🔄 Toca un componente y usa el botón ↻ para rotarlo.<br>
 ⚡ ¡Observa las partículas de energía fluir!
 </div>
 <button class="btn btn-ok" onclick="verify()">✓ VERIFICAR CIRCUITO</button>
@@ -462,14 +496,18 @@ Tu misión: Encender tu primera luz conectando un LED a una batería.
 </div>
 <div class="panel">
 <div class="section-title">⚡ Tablero de Circuitos</div>
-<p style="text-align:center;font-size:.82em;opacity:.75;margin-bottom:12px;">📱 Toca un punto dorado → luego toca otro</p>
+<p style="text-align:center;font-size:.82em;opacity:.75;margin-bottom:12px;">📱 Toca un punto dorado → luego toca otro<br>🔄 Toca un componente y gíralo con el botón</p>
 <div class="board-wrap">
 <div id="board">
+<div class="board-corner tl"></div>
+<div class="board-corner br"></div>
 <div class="board-hud"><div class="hud-dot"></div><span class="hud-txt">CIRCUITO ACTIVO</span><div class="hud-dot"></div></div>
 <svg id="wire-svg"></svg>
 <!-- BATERÍA -->
-<div class="comp battery" id="cb">
-<div class="cp" data-c="battery" data-t="positive" style="top:-24px;left:50%;transform:translateX(-50%);"></div>
+<div class="comp battery" id="cb" data-rot="0">
+<button class="rotate-btn" type="button" onclick="rotateComp(event,'cb')" title="Rotar">↻</button>
+<div class="comp-inner">
+<div class="cp" data-c="battery" data-t="positive" data-tip="+ Batería" style="top:-24px;left:50%;transform:translateX(-50%);"></div>
 <div class="comp-base">
 <div class="batt-body">
 <div class="batt-lbl">9V</div>
@@ -477,17 +515,21 @@ Tu misión: Encender tu primera luz conectando un LED a una batería.
 <div class="batt-sign batt-minus">−</div>
 </div>
 </div>
-<div class="cp" data-c="battery" data-t="negative" style="bottom:-24px;left:50%;transform:translateX(-50%);"></div>
+<div class="cp" data-c="battery" data-t="negative" data-tip="− Batería" style="bottom:-24px;left:50%;transform:translateX(-50%);"></div>
+</div>
 </div>
 <!-- LED -->
-<div class="comp led" id="cl">
+<div class="comp led" id="cl" data-rot="0">
+<button class="rotate-btn" type="button" onclick="rotateComp(event,'cl')" title="Rotar">↻</button>
+<div class="comp-inner">
 <div class="led-sign led-sp">+</div>
-<div class="cp" data-c="led" data-t="positive" style="top:-24px;left:14px;"></div>
+<div class="cp" data-c="led" data-t="positive" data-tip="+ LED (pata larga)" style="top:-24px;left:14px;"></div>
 <div class="comp-base" style="border-radius:50% 50% 14px 14px;padding:7px;">
 <div class="led-body"></div>
 </div>
-<div class="cp" data-c="led" data-t="negative" style="bottom:-23px;right:14px;"></div>
+<div class="cp" data-c="led" data-t="negative" data-tip="− LED (pata corta)" style="bottom:-23px;right:14px;"></div>
 <div class="led-sign led-sn">−</div>
+</div>
 </div>
 </div>
 </div>
@@ -515,11 +557,15 @@ Has completado tu primer circuito eléctrico.<br>
 // VARIABLES
 let wires=[],selPt=null,colorIdx=0,complete=false;
 let dragEl=null,ox=0,oy=0,dragging=false,tid=null;
+let selectedComp=null,sx=0,sy=0,moved=false;
 const COLORS=['#ff4757','#06b6d4','#4facfe','#ffd700'];
 const MAX=2;
 // INIT
 document.addEventListener('DOMContentLoaded',()=>{
 setupPoints();setupDrag();resizeSVG();
+document.getElementById('board').addEventListener('click',e=>{
+if(e.target.id==='board'&&selectedComp){selectedComp.classList.remove('comp-selected');selectedComp=null;}
+});
 window.addEventListener('resize',()=>{resizeSVG();redraw();});
 });
 function resizeSVG(){
@@ -552,6 +598,22 @@ selPt=null;
 updateUI();updateProg();checkMissions();
 }
 }
+// SELECCIÓN Y ROTACIÓN
+function selectComp(el){
+if(selectedComp&&selectedComp!==el){selectedComp.classList.remove('comp-selected');}
+if(selectedComp===el){el.classList.remove('comp-selected');selectedComp=null;}
+else{el.classList.add('comp-selected');selectedComp=el;showToast('🔧 Componente seleccionado — toca ↻ para rotar','info');}
+}
+function rotateComp(e,id){
+e.preventDefault();e.stopPropagation();
+const el=document.getElementById(id);
+let rot=(parseInt(el.dataset.rot||'0',10)+90)%360;
+el.dataset.rot=rot;
+const inner=el.querySelector('.comp-inner');
+if(inner)inner.style.transform='rotate('+rot+'deg)';
+redraw();
+showToast('🔄 Rotado a '+rot+'°','success');
+}
 // DRAG
 function setupDrag(){
 document.querySelectorAll('.comp').forEach(c=>{
@@ -565,18 +627,20 @@ document.addEventListener('touchend',stopD);
 }
 function startD(e){
 const t=e.target;
-if(t.classList.contains('cp'))return;
+if(t.classList.contains('cp')||t.classList.contains('rotate-btn'))return;
 e.preventDefault();
-dragEl=e.currentTarget;dragging=false;
+dragEl=e.currentTarget;dragging=false;moved=false;
 const r=dragEl.getBoundingClientRect();
-if(e.type==='touchstart'){const tc=e.touches[0];tid=tc.identifier;ox=tc.clientX-r.left;oy=tc.clientY-r.top;}
-else{ox=e.clientX-r.left;oy=e.clientY-r.top;}
+if(e.type==='touchstart'){const tc=e.touches[0];tid=tc.identifier;ox=tc.clientX-r.left;oy=tc.clientY-r.top;sx=tc.clientX;sy=tc.clientY;}
+else{ox=e.clientX-r.left;oy=e.clientY-r.top;sx=e.clientX;sy=e.clientY;}
 }
 function doD(e){
 if(!dragEl)return;e.preventDefault();
 let cx,cy;
 if(e.type==='touchmove'){const t=Array.from(e.touches).find(t=>t.identifier===tid);if(!t)return;cx=t.clientX;cy=t.clientY;}
 else{cx=e.clientX;cy=e.clientY;}
+if(Math.abs(cx-sx)>6||Math.abs(cy-sy)>6)moved=true;
+if(!moved)return;
 dragging=true;dragEl.classList.add('dragging');
 const b=document.getElementById('board'),br=b.getBoundingClientRect();
 const x=Math.max(5,Math.min(cx-br.left-ox,b.scrollWidth-dragEl.offsetWidth-5));
@@ -585,7 +649,10 @@ dragEl.style.left=x+'px';dragEl.style.top=y+'px';dragEl.style.transform='none';
 redraw();
 }
 function stopD(){
-if(dragEl)dragEl.classList.remove('dragging');
+if(dragEl){
+dragEl.classList.remove('dragging');
+if(!moved){selectComp(dragEl);}
+}
 setTimeout(()=>{dragging=false;},60);
 dragEl=null;tid=null;
 }
@@ -741,7 +808,13 @@ function resetAll(){
 wires=[];colorIdx=0;
 document.getElementById('wire-svg').innerHTML='';
 document.querySelectorAll('.cp').forEach(p=>p.classList.remove('connected','selected'));
-selPt=null;complete=false;
+document.querySelectorAll('.comp').forEach(c=>{
+c.classList.remove('comp-selected');
+c.dataset.rot='0';
+const inner=c.querySelector('.comp-inner');
+if(inner)inner.style.transform='rotate(0deg)';
+});
+selPt=null;complete=false;selectedComp=null;
 document.getElementById('cl').classList.remove('active');
 ['m1','m2'].forEach(id=>document.getElementById(id).classList.remove('done'));
 updateUI();updateProg();
